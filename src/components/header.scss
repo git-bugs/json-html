@@ -1,0 +1,19 @@
+.header {
+  height: 40px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c5c5c5;
+}
+
+.header__test {
+  border: 1px solid #c5c5c5;
+  padding: 4px 8px;
+  cursor: pointer;
+  background: #f0f0f0;
+  transition: 0.2s;
+  &:hover {
+    background: #e4e4e4;
+  }
+}

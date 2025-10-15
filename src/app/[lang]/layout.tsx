@@ -1,16 +1,25 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Montserrat, Geist_Mono, Inter } from 'next/font/google';
 import '../globals.css';
 import { Lang } from '@/types/lang';
+import Header from '@/components/header';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const montserrat = Montserrat({
+  variable: '--font-montserrat',
+  weight: ['400'],
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+});
+
+const inter = Inter({
+  variable: '--font-inter',
+  weight: ['400'],
+  display: 'swap',
 });
 
 const translations = {
@@ -73,7 +82,10 @@ export default async function RootLayout({
   const { lang } = await params;
   return (
     <html lang={lang === 'ru' ? 'ru-RU' : 'en-EN'}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${montserrat.variable} ${geistMono.variable} ${inter.variable}`}
+      >
+        <Header />
         {children}
       </body>
     </html>

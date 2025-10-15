@@ -6,6 +6,7 @@ import './input.scss';
 import ErrorWidget from '@/components/error';
 import { useParams } from 'next/navigation';
 import { Lang } from '@/types/lang';
+import { useTextStore } from '@/store/text-store';
 
 const translation = {
   ru: {
@@ -29,10 +30,11 @@ const translation = {
 } as const;
 
 export default function TextInput() {
-  const [text, setText] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');
+  const [fileName, setFileName] = useState('');
+  const { originalText, setOriginal } = useTextStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
@@ -43,7 +45,8 @@ export default function TextInput() {
   };
 
   const handleClear = () => {
-    setText('');
+    setOriginal('');
+    setFileName('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -54,22 +57,17 @@ export default function TextInput() {
       setErrorMessage(t.file_end_error);
       return;
     }
+    const name = file.name;
+    setFileName(name);
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target?.result as string;
-      setText(content);
+      setOriginal(content);
     };
     reader.onerror = () => {
       setErrorMessage(t.read_error);
     };
     reader.readAsText(file, 'UTF-8');
-  };
-
-  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      readFile(file);
-    }
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement>) => {
@@ -127,32 +125,52 @@ export default function TextInput() {
     }
   };
 
+  function calculateTextSize(text: string) {
+    const sizeInBytes = new TextEncoder().encode(originalText).length;
+    if (sizeInBytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(sizeInBytes) / Math.log(k));
+    return (
+      parseFloat((sizeInBytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+    );
+  }
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    readFile(file);
+  };
+
   return (
     <div className="input__container">
-      <div className="button-panel">
-        <button onClick={handleClear} className="input__button">
-          {t.clear_button}
-        </button>
+      <div className="input__box">
+        <div className="input__info">
+          <span className="input__size out">
+            {calculateTextSize(originalText)}
+          </span>
+          <span className="input__name out">{fileName}</span>
+        </div>
+        <div className="button__panel">
+          <button onClick={handleClear} className="input__button">
+            {t.clear_button}
+          </button>
 
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="input__button"
-        >
-          {t.enter_button}
-        </button>
-
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileSelect}
-          accept=".txt,text/*"
-          className="file-input"
-        />
+          <label className="input__button">
+            {t.enter_button}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFile}
+              className="hidden__input"
+            />
+          </label>
+        </div>
       </div>
-
       <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        id="input__textarea"
+        value={originalText}
+        onChange={(e) => setOriginal(e.target.value)}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -160,7 +178,6 @@ export default function TextInput() {
         placeholder={t.textarea_placeholder}
         className="input__textarea"
       />
-
       <ErrorWidget errorMessage={errorMessege} onClose={handleCloseStatus} />
     </div>
   );

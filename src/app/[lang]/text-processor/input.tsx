@@ -145,11 +145,13 @@ export default function TextInput() {
   return (
     <div className="input__container">
       <div className="input__box">
-        <div className="input__info">
-          <span className="input__size out">
+        <div className="input__stats">
+          <span className="input__size">
             {calculateTextSize(originalText)}
           </span>
-          <span className="input__name out">{fileName}</span>
+          {originalText != '' && (
+            <span className="input__name">{fileName}</span>
+          )}
         </div>
         <div className="button__panel">
           <button onClick={handleClear} className="input__button">

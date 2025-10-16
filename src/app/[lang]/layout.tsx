@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Montserrat, Geist_Mono, Inter } from 'next/font/google';
 import '../globals.css';
 import { Lang } from '@/types/lang';
-import Header from '@/components/header';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -85,7 +84,6 @@ export default async function RootLayout({
       <body
         className={`${montserrat.variable} ${geistMono.variable} ${inter.variable}`}
       >
-        <Header />
         {children}
       </body>
     </html>

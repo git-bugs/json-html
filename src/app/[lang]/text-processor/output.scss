@@ -1,48 +1,70 @@
-.output-container {
+.output__container {
   border: 1px solid #e1e5e9;
   border-radius: 8px;
   background: white;
   overflow: hidden;
+  width: 50%;
+  display: flex;  
+  flex-direction: column;
+  position: relative;
 }
 
-.output-header {
+.output__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   padding: 12px 16px;
   background: #f8f9fa;
   border-bottom: 1px solid #e1e5e9;
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+  }
+  button {
+    padding: 6px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+      background: #f3f4f6;
+    }
+  }
 }
 
-.output-header h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.output-stats {
+.output__stats {
   display: flex;
+  align-items: center;
   gap: 12px;
   font-size: 12px;
   color: #718096;
+  span {
+    padding: 2px 6px;
+    background: #edf2f7;
+    border-radius: 4px;
+    cursor: default;
+  }
 }
 
-.output-stats span {
-  padding: 2px 6px;
-  background: #edf2f7;
-  border-radius: 4px;
-}
-
-.output-controls {
+.output__buttons {
   display: flex;
+  gap: 12px;
+}
+
+.output__controls {
+  display: flex;
+  justify-content: space-between;
   gap: 8px;
   padding: 12px 16px;
   background: #f8f9fa;
   border-bottom: 1px solid #e1e5e9;
 }
 
-.output-controls button {
+.output__controls button {
   padding: 6px 12px;
   border: 1px solid #d1d5db;
   border-radius: 4px;
@@ -50,64 +72,69 @@
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s;
+
+  &.download__btn {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+  }
+
+  &.download__btn:hover:not(:disabled) {
+    background: #2563eb;
+  }
 }
 
-.output-controls button:hover:not(:disabled) {
+.output__controls button:hover:not(:disabled) {
   background: #f3f4f6;
 }
 
-.output-controls button:disabled {
+.output__controls button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.copy-btn.success {
+.copy__btn.success {
   background: #10b981;
   color: white;
   border-color: #10b981;
 }
 
-.download-btn {
-  background: #3b82f6;
-  color: white;
-  border-color: #3b82f6;
-}
-
-.download-btn:hover:not(:disabled) {
-  background: #2563eb;
-}
-
-.clear-btn {
+.clear__btn {
   background: #ef4444;
   color: white;
   border-color: #ef4444;
 }
 
-.clear-btn:hover:not(:disabled) {
+.clear__btn:hover:not(:disabled) {
   background: #dc2626;
 }
 
-.output-content {
+.output__content {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
-.output-textarea {
+.output__textarea {
   width: 100%;
   padding: 16px;
   border: none;
-  resize: vertical;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  resize: none;
+  font-family: var(--font-geist-mono);
   font-size: 14px;
   line-height: 1.5;
   background: white;
   outline: none;
+  flex: 1;
 }
 
-.output-textarea:focus {
+.output__textarea:focus {
   outline: none;
 }
 
-.output-placeholder {
+.output__placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -116,7 +143,19 @@
   font-style: italic;
 }
 
-.processing-indicator {
+.output__commit{
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  background: #2746d1;
+  color: #fff;
+  cursor: pointer;
+}
+
+.processing__indicator {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,6 +174,10 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

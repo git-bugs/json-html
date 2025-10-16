@@ -1,7 +1,9 @@
 import { Lang } from '@/types/lang';
 import TextInput from './input';
 import { Metadata } from 'next';
-import { Output } from './output';
+import Output from './output';
+import './processor.scss';
+import Header from '@/components/header';
 
 const translations = {
   ru: {
@@ -57,8 +59,11 @@ export async function generateMetadata({
 export default function TextProcessor() {
   return (
     <section className="processor">
-      <TextInput />
-      {/* <Output/> */}
+      <Header />
+      <main>
+        <TextInput />
+        <Output />
+      </main>
     </section>
   );
 }

@@ -3,7 +3,7 @@
 import { useState, useRef, ChangeEvent, useEffect } from 'react';
 
 import './input.scss';
-import ErrorWidget from '@/components/error';
+import ErrorWidget from '@/components/errorWidget';
 import { useParams } from 'next/navigation';
 import { Lang } from '@/types/lang';
 import { useTextStore } from '@/store/text-store';
@@ -145,20 +145,12 @@ export default function TextInput() {
   return (
     <div className="input__container">
       <div className="input__box">
-        <div className="input__stats">
-          <span className="input__size">
-            {calculateTextSize(originalText)}
-          </span>
-          {originalText != '' && (
-            <span className="input__name">{fileName}</span>
-          )}
-        </div>
         <div className="button__panel">
-          <button onClick={handleClear} className="input__button">
+          <button onClick={handleClear} className="input__button input__clear">
             {t.clear_button}
           </button>
 
-          <label className="input__button">
+          <label className="input__button input__file">
             {t.enter_button}
             <input
               type="file"
@@ -167,6 +159,12 @@ export default function TextInput() {
               className="hidden__input"
             />
           </label>
+        </div>
+        <div className="input__stats">
+          {originalText != '' && (
+            <span className="input__name">{fileName}</span>
+          )}
+          <span className="input__size">{calculateTextSize(originalText)}</span>
         </div>
       </div>
       <textarea

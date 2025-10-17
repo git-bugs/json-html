@@ -3,17 +3,12 @@
   background: transparent;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid #c5c5c5;
+  background: var(--dark);
+  padding: 0 12px;
 }
 
-.header__test {
-  border: 1px solid #c5c5c5;
-  padding: 4px 8px;
-  cursor: pointer;
-  background: #f0f0f0;
-  transition: 0.2s;
-  &:hover {
-    background: #e4e4e4;
-  }
+.header__title {
+  font-size: 18px;
+  color: var(--text-light);
+  font-weight: 400;
 }

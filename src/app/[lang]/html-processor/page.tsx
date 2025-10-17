@@ -7,12 +7,12 @@ import Header from '@/components/header';
 
 const translations = {
   ru: {
-    meta_title: 'Text Cleaner — Очистка HTML и нормализация текста',
+    meta_title: 'HTML - форматирование, нормализация, редактирование.',
     meta_description:
       'Удалите HTML, нормализуйте кодировку и очистите текст онлайн.',
   },
   en: {
-    meta_title: 'Text Cleaner — HTML Cleanup and Text Normalization',
+    meta_title: 'HTML - formatting, normalization, editing.',
     meta_description:
       'Remove HTML, normalize encoding and clean up text online.',
   },
@@ -56,10 +56,15 @@ export async function generateMetadata({
   };
 }
 
-export default function TextProcessor() {
+export default async function TextProcessor({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}) {
+  const { lang } = await params;
   return (
     <section className="processor">
-      <Header />
+      <Header lang={lang} />
       <main>
         <TextInput />
         <Output />

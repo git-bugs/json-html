@@ -10,7 +10,7 @@ export default function CommitButton() {
 
   return (
     <button className="output__commit" onClick={commitProcessedToOriginal}>
-      Принять результат
+      <img src="/arrow_left.svg" alt="" />
     </button>
   );
 }

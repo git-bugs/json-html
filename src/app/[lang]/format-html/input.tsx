@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, ChangeEvent, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import './input.scss';
 import ErrorWidget from '@/components/errorWidget';
@@ -33,8 +33,7 @@ export default function TextInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');
-  const [fileName, setFileName] = useState('');
-  const { originalText, setOriginal } = useTextStore();
+  const { fileName, setFileName, originalText, setOriginal } = useTextStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;

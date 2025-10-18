@@ -4,6 +4,9 @@ type State = {
   originalText: string;
   processedText: string;
   activeButtonId: string;
+  fileName: string;
+  isProcessing: boolean;
+  setFileName: (name: string) => void;
   setOriginal: (text: string) => void;
   removeAttributes: () => void;
   removeTags: () => void;
@@ -26,6 +29,10 @@ export const useTextStore = create<State>((set, get) => ({
   originalText: '',
   processedText: '',
   activeButtonId: '',
+  fileName: '',
+  isProcessing: false,
+  setFileName: (name) => set({ fileName: name }),
+
   setOriginal: (text) => {
     set({ activeButtonId: '' });
     set({ originalText: text, processedText: text });
@@ -43,7 +50,7 @@ export const useTextStore = create<State>((set, get) => ({
   },
 
   removeAttributes: () => {
-    set({ activeButtonId: buttonIds.BUTTON_1 });
+    set({ activeButtonId: buttonIds.BUTTON_1, isProcessing: true });
     const raw = get().originalText;
     const removerd = raw.replace(/<(\w+)(\s[^>]*)?>/g, '<$1>');
     const noEmptyLines = removerd
@@ -51,11 +58,11 @@ export const useTextStore = create<State>((set, get) => ({
       .map((line) => line.trim())
       .filter((line) => line.length > 0)
       .join('\n');
-    set({ processedText: noEmptyLines });
+    set({ processedText: noEmptyLines, isProcessing: false });
   },
 
   removeTags: () => {
-    set({ activeButtonId: buttonIds.BUTTON_2 });
+    set({ activeButtonId: buttonIds.BUTTON_2, isProcessing: true });
     const raw = get().originalText;
     const noTags = raw.replace(/<[^>]+>/g, '');
     const noEmptyLines = noTags
@@ -63,11 +70,11 @@ export const useTextStore = create<State>((set, get) => ({
       .map((line) => line.trim())
       .filter((line) => line.length > 0)
       .join('\n');
-    set({ processedText: noEmptyLines });
+    set({ processedText: noEmptyLines, isProcessing: false });
   },
 
   removeEmptyLines: () => {
-    set({ activeButtonId: buttonIds.BUTTON_3 });
+    set({ activeButtonId: buttonIds.BUTTON_3, isProcessing: true });
     const raw = get().originalText;
     const cleaned = raw
       .split('\n')
@@ -75,11 +82,11 @@ export const useTextStore = create<State>((set, get) => ({
       .filter((line) => line.length > 0)
       .join('\n');
 
-    set({ processedText: cleaned });
+    set({ processedText: cleaned, isProcessing: false });
   },
 
   format: () => {
-    set({ activeButtonId: buttonIds.BUTTON_4 });
+    set({ activeButtonId: buttonIds.BUTTON_4, isProcessing: true });
     const raw = get().originalText;
     const formatted = raw
       // HTML: перенос после открывающего тега
@@ -95,19 +102,19 @@ export const useTextStore = create<State>((set, get) => ({
       // Удаление двойных пустых строк
       .replace(/\n\s*\n/g, '\n');
 
-    set({ processedText: formatted.trim() });
+    set({ processedText: formatted.trim(), isProcessing: false });
   },
 
   escaping: () => {
-    set({ activeButtonId: buttonIds.BUTTON_5 });
+    set({ activeButtonId: buttonIds.BUTTON_5, isProcessing: true });
     const raw = get().originalText;
     const sanitized = raw
-      .replace(/&/g, '&amp;') // сначала экранируем &
-      .replace(/</g, '&lt;') // затем <
-      .replace(/>/g, '&gt;') // затем >
-      .replace(/"/g, '&quot;') // затем "
-      .replace(/'/g, '&#39;'); // затем '
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
 
-    set({ processedText: sanitized });
+    set({ processedText: sanitized, isProcessing: false });
   },
 }));

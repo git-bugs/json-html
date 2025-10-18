@@ -8,7 +8,7 @@ const translations = {
     p_change: 'Данный инструмент предлагает:',
     ul_change: ['Удаление HTML-тегов', 'Очистка HTML-аттрибутов'],
     description: 'описание',
-    link: '/ru/text-processor',
+    link: '/ru/format-html',
     link_text: 'Очистка HTML и нормализация текста',
   },
   en: {
@@ -16,7 +16,7 @@ const translations = {
     h2_change: 'Text changer',
     p_change: 'This tool offers:',
     ul_change: ['Removing HTML Tags', 'Cleaning up HTML attributes'],
-    link: '/en/text-processor',
+    link: '/en/format-html',
     link_text: 'HTML Cleanup and Text Normalization',
   },
 } as const;

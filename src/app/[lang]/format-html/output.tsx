@@ -16,6 +16,13 @@ const translation = {
     button_format: 'форматирование',
     button_escaping: 'экранирование',
     textarea_placeholder: 'Здесь появится результат обработки...',
+    stats_chars: 'символов',
+    stats_words: 'слов',
+    stats_lines: 'строк',
+    processing: 'Обработка...',
+    copy_button: 'копировать',
+    copy_success: 'Скопировано',
+    download_button: 'скачать',
   },
   en: {
     button_reset: 'reset',
@@ -25,16 +32,24 @@ const translation = {
     button_format: 'formatting',
     button_escaping: 'escaping',
     textarea_placeholder: 'The processing result will appear here...',
+    stats_chars: 'chars',
+    stats_words: 'words',
+    stats_lines: 'lines',
+    processing: 'Processing ...',
+    copy_button: 'copy',
+    copy_success: 'Success',
+    download_button: 'download',
   },
 } as const;
 
 export default function Output() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
   const {
     activeButtonId,
     processedText,
+    fileName,
+    isProcessing,
     removeAttributes,
     removeTags,
     removeEmptyLines,
@@ -73,8 +88,11 @@ export default function Output() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const fileName = 'test';
-    a.download = `${fileName}.txt`;
+    a.download = `${
+      fileName.split('.').slice(0, -1).join('.') +
+      `-${activeButtonId}.` +
+      fileName.split('.').pop()
+    }`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -102,7 +120,11 @@ export default function Output() {
             activeButtonId == buttonIds.BUTTON_1 ? 'active' : ''
           }`}
           onClick={removeAttributes}
-          disabled={!processedText || isProcessing}
+          disabled={
+            !processedText ||
+            isProcessing ||
+            activeButtonId == buttonIds.BUTTON_1
+          }
         >
           {t.button_delete_attr}
         </button>
@@ -111,7 +133,11 @@ export default function Output() {
             activeButtonId == buttonIds.BUTTON_2 ? 'active' : ''
           }`}
           onClick={removeTags}
-          disabled={!processedText || isProcessing}
+          disabled={
+            !processedText ||
+            isProcessing ||
+            activeButtonId == buttonIds.BUTTON_2
+          }
         >
           {t.button_delete_tags}
         </button>
@@ -120,7 +146,11 @@ export default function Output() {
             activeButtonId == buttonIds.BUTTON_3 ? 'active' : ''
           }`}
           onClick={removeEmptyLines}
-          disabled={!processedText || isProcessing}
+          disabled={
+            !processedText ||
+            isProcessing ||
+            activeButtonId == buttonIds.BUTTON_3
+          }
         >
           {t.button_delete_empty}
         </button>
@@ -129,7 +159,11 @@ export default function Output() {
             activeButtonId == buttonIds.BUTTON_4 ? 'active' : ''
           }`}
           onClick={format}
-          disabled={!processedText || isProcessing}
+          disabled={
+            !processedText ||
+            isProcessing ||
+            activeButtonId == buttonIds.BUTTON_4
+          }
         >
           {t.button_format}
         </button>
@@ -138,7 +172,11 @@ export default function Output() {
             activeButtonId == buttonIds.BUTTON_5 ? 'active' : ''
           }`}
           onClick={escaping}
-          disabled={!processedText || isProcessing}
+          disabled={
+            !processedText ||
+            isProcessing ||
+            activeButtonId == buttonIds.BUTTON_5
+          }
         >
           {t.button_escaping}
         </button>
@@ -147,9 +185,15 @@ export default function Output() {
       <div className="output__controls">
         <div className="output__stats">
           <CommitButton />
-          <span>{stats.characters} chars</span>
-          <span>{stats.words} words</span>
-          <span>{stats.lines} lines</span>
+          <span>
+            {stats.characters} {t.stats_chars}
+          </span>
+          <span>
+            {stats.words} {t.stats_words}
+          </span>
+          <span>
+            {stats.lines} {t.stats_lines}
+          </span>
         </div>
         <div className="output__buttons">
           <button
@@ -159,7 +203,7 @@ export default function Output() {
               copySuccess ? 'success' : ''
             }`}
           >
-            {copySuccess ? '✓ Скопировано!' : 'Копировать'}
+            {copySuccess ? `✓ ${t.copy_success}!` : t.copy_button}
           </button>
 
           <button
@@ -167,7 +211,7 @@ export default function Output() {
             disabled={!processedText || isProcessing}
             className="output__button download__btn"
           >
-            Скачать
+            {t.download_button}
           </button>
         </div>
       </div>
@@ -175,7 +219,7 @@ export default function Output() {
       {isProcessing && (
         <div className="processing__indicator">
           <div className="spinner"></div>
-          <span>Обработка...</span>
+          <span>{t.processing}</span>
         </div>
       )}
       {!isProcessing && (

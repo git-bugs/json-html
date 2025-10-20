@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
-import { Montserrat, Geist_Mono, Inter } from 'next/font/google';
+import {
+  Montserrat,
+  JetBrains_Mono,
+  Inter,
+  Space_Grotesk,
+  Open_Sans,
+} from 'next/font/google';
 import '../globals.css';
-import { Lang } from '@/types/lang';
+import { Lang } from '../../types/lang';
 
 const montserrat = Montserrat({
   variable: '--font-montserrat',
@@ -9,15 +15,28 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const space = Space_Grotesk({
+  variable: '--font-space',
+  display: 'swap',
+  subsets: ['latin'],
+});
+
+const open = Open_Sans({
+  variable: '--font-open',
+  display: 'swap',
+  weight: ['400', '700'],
+  subsets: ['latin', 'cyrillic'],
+});
+
+const mono = JetBrains_Mono({
+  variable: '--font-jet-mono',
   weight: ['400'],
   display: 'swap',
 });
 
 const inter = Inter({
   variable: '--font-inter',
-  weight: ['400'],
+  weight: ['400', '700'],
   display: 'swap',
 });
 
@@ -82,7 +101,7 @@ export default async function RootLayout({
   return (
     <html lang={lang === 'ru' ? 'ru-RU' : 'en-EN'}>
       <body
-        className={`${montserrat.variable} ${geistMono.variable} ${inter.variable}`}
+        className={`${montserrat.variable} ${mono.variable} ${inter.variable} ${space.variable} ${open.variable}`}
       >
         {children}
       </body>

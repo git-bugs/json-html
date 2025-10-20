@@ -15,6 +15,7 @@ type State = {
   format: () => void;
   resetToOriginal: () => void;
   escaping: () => void;
+  minify: () => void;
 };
 
 export const buttonIds = {
@@ -23,6 +24,7 @@ export const buttonIds = {
   BUTTON_3: 'lines',
   BUTTON_4: 'format',
   BUTTON_5: 'escaping',
+  BUTTON_6: 'minify',
 };
 
 export const useTextStore = create<State>((set, get) => ({
@@ -116,5 +118,17 @@ export const useTextStore = create<State>((set, get) => ({
       .replace(/'/g, '&#39;');
 
     set({ processedText: sanitized, isProcessing: false });
+  },
+
+  minify: () => {
+    set({ activeButtonId: buttonIds.BUTTON_6, isProcessing: true });
+    const raw = get().originalText;
+    const minified = raw
+      .replace(/\n/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/>\s+</g, '><')
+      .trim();
+
+    set({ processedText: minified, isProcessing: false });
   },
 }));

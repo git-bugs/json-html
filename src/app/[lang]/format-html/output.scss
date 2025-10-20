@@ -65,6 +65,7 @@
   gap: 12px;
   font-size: 12px;
   color: var(--text-grey);
+  font-family: var(--font-jet-mono);
   transition: 0.2s;
   span {
     padding: 2px 6px;
@@ -148,7 +149,7 @@
   padding: 16px;
   border: none;
   resize: none;
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-jet-mono);
   font-size: 14px;
   line-height: 1.5;
   background: white;

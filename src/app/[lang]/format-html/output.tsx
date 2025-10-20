@@ -5,7 +5,7 @@ import './output.scss';
 import { buttonIds, useTextStore } from '@/store/text-store';
 import CommitButton from './commit-button';
 import { useParams } from 'next/navigation';
-import { Lang } from '@/types/lang';
+import { Lang } from '../../../types/lang';
 
 const translation = {
   ru: {
@@ -23,6 +23,7 @@ const translation = {
     copy_button: 'копировать',
     copy_success: 'Скопировано',
     download_button: 'скачать',
+    minify_button: 'минифицировать',
   },
   en: {
     button_reset: 'reset',
@@ -39,6 +40,7 @@ const translation = {
     copy_button: 'copy',
     copy_success: 'Success',
     download_button: 'download',
+    minify_button: 'minify',
   },
 } as const;
 
@@ -56,6 +58,7 @@ export default function Output() {
     format,
     resetToOriginal,
     escaping,
+    minify,
   } = useTextStore();
 
   const params = useParams<{ lang: Lang }>();
@@ -179,6 +182,19 @@ export default function Output() {
           }
         >
           {t.button_escaping}
+        </button>
+        <button
+          className={`output__button ${
+            activeButtonId == buttonIds.BUTTON_6 ? 'active' : ''
+          }`}
+          onClick={minify}
+          disabled={
+            !processedText ||
+            isProcessing ||
+            activeButtonId == buttonIds.BUTTON_6
+          }
+        >
+          {t.minify_button}
         </button>
       </div>
 

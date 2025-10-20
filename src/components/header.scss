@@ -1,10 +1,18 @@
 .header {
-  height: 40px;
+  height: 48px;
   background: transparent;
   display: flex;
   align-items: center;
   background: var(--dark);
   padding: 0 12px;
+  a {
+    line-height: 1;
+  }
+}
+
+.header__logo {
+  fill: var(--bg);
+  margin-right: 16px;
 }
 
 .header__title {

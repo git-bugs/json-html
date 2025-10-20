@@ -1,5 +1,9 @@
 :root {
   --bg: #fafafa;
+  --text: #313131;
+  --grey-lines: #4e4e4e;
+  --accent: #ff5353;
+
   --dark: #1f2020;
   --dark-hover: #2c2d2d;
   --text-light: #eeeeee;
@@ -19,10 +23,17 @@ body {
 
 body {
   color: var(--dark);
-  background: var(--background);
-  font-family: var(--font-inter), sans-serif;
+  background: var(--bg);
+  font-family: var(--font-open), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 18px;
+  line-height: 1.4;
+}
+h1,
+h2,
+h3 {
+  /* font-family: var(--font-inter); */
 }
 
 * {
@@ -36,9 +47,16 @@ a {
   text-decoration: none;
 }
 
-button,label {
+button,
+label {
   display: block;
   font-family: inherit;
   text-transform: uppercase;
-  font-weight: 700;
+  white-space: nowrap;
+  /* font-weight: 700; */
+}
+
+ul,
+ol {
+  list-style-type: none;
 }

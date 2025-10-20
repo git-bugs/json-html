@@ -1,4 +1,4 @@
-import { Lang } from '@/types/lang';
+import { Lang } from '../../../types/lang';
 import TextInput from './input';
 import { Metadata } from 'next';
 import Output from './output';
@@ -7,14 +7,16 @@ import Header from '@/components/header';
 
 const translations = {
   ru: {
-    meta_title: 'HTML - форматирование, нормализация, редактирование.',
+    meta_title:
+      'HTML: форматирование, экранирование,минификация, нормализация и редактирование текста',
     meta_description:
-      'Удалите HTML, нормализуйте кодировку и очистите текст онлайн.',
+      'Инструменты и методы анализа HTML: форматирование, экранирование, нормализация, редактирование и минификация',
   },
   en: {
-    meta_title: 'HTML - formatting, normalization, editing.',
+    meta_title:
+      'HTML: formatting, escaping, minification, normalization and text editing',
     meta_description:
-      'Remove HTML, normalize encoding and clean up text online.',
+      'HTML parsing tools and techniques: formatting, escaping, normalization, editing and minify',
   },
 } as const;
 

@@ -1,25 +1,7 @@
 import type { Metadata } from 'next';
-import {
-  Montserrat,
-  JetBrains_Mono,
-  Inter,
-  Space_Grotesk,
-  Open_Sans,
-} from 'next/font/google';
+import { JetBrains_Mono, Inter, Open_Sans } from 'next/font/google';
 import '../globals.css';
 import { Lang } from '../../types/lang';
-
-const montserrat = Montserrat({
-  variable: '--font-montserrat',
-  weight: ['400'],
-  display: 'swap',
-});
-
-const space = Space_Grotesk({
-  variable: '--font-space',
-  display: 'swap',
-  subsets: ['latin'],
-});
 
 const open = Open_Sans({
   variable: '--font-open',
@@ -42,14 +24,20 @@ const inter = Inter({
 
 const translations = {
   ru: {
-    title: 'Сервис обработки и анализа текста',
-    description:
-      'Умный анализ и обработка текста онлайн. Извлекайте ключевые фразы, проводите семантический анализ, находите тональность, очищайте и форматируйте текст. Работа с любыми объемами данных.',
+    meta_title:
+      'HTML и JSON онлайн — форматирование, валидация и преобразование кода',
+    meta_description:
+      'Бесплатные онлайн-инструменты для форматирования, проверки и преобразования HTML и JSON. Редактируйте и очищайте код прямо в браузере.',
+    meta_keywords:
+      'HTML форматирование, JSON валидация, онлайн инструменты, форматирование кода, HTML в JSON, JSON в HTML, валидатор синтаксиса, beautify код, очистка HTML, минификация JSON, инструменты разработчика, веб-инструменты',
   },
   en: {
-    title: 'Text processing and analysis service',
-    description:
-      'Smart analysis and text processing online. Extract key phrases, perform semantic analysis, find sentiment, clean and format text. Work with any amount of data.',
+    meta_title:
+      'HTML and JSON Online — Formatting, Validation, and Code Conversion',
+    meta_description:
+      'Free online tools to format, validate, and convert HTML and JSON code. Edit, clean, and beautify your code instantly in the browser.',
+    meta_keywords:
+      'HTML formatting, JSON validation, online tools, code formatter, HTML to JSON, JSON to HTML, syntax validator, beautify code, clean HTML, minify JSON, developer tools, web tools',
   },
 };
 
@@ -62,12 +50,13 @@ export async function generateMetadata({
   const t = translations[lang] || translations.ru;
   const baseUrl = process.env.BASE_URL;
   return {
-    title: t.title,
-    description: t.description,
+    title: t.meta_title,
+    description: t.meta_description,
+    keywords: t.meta_keywords,
     openGraph: {
-      title: t.description,
-      description: t.description,
-      // url: `${baseUrl}${currentPath}`,
+      title: t.meta_title,
+      description: t.meta_description,
+      url: `${baseUrl}/${lang}`,
       siteName: 'TextScope',
       images: [
         {
@@ -87,6 +76,12 @@ export async function generateMetadata({
         en: `${baseUrl}/en`,
       },
     },
+    icons: {
+      icon: {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+    },
   };
 }
 
@@ -100,9 +95,7 @@ export default async function RootLayout({
   const { lang } = await params;
   return (
     <html lang={lang === 'ru' ? 'ru-RU' : 'en-EN'}>
-      <body
-        className={`${montserrat.variable} ${mono.variable} ${inter.variable} ${space.variable} ${open.variable}`}
-      >
+      <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         {children}
       </body>
     </html>

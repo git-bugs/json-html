@@ -21,7 +21,7 @@ const cards = {
   ru: [
     {
       h2: 'HTML',
-      img_url: 'services-image1.png',
+      img_url: 'html-image.webp',
       img_alt: 'HTML Форматирование картинка',
       list: [
         'Форматирование',
@@ -36,7 +36,7 @@ const cards = {
     },
     {
       h2: 'JSON',
-      img_url: 'services-image1.png',
+      img_url: 'json-image.webp',
       img_alt: 'JSON Форматирование картинка',
       list: [
         'Форматирование',
@@ -44,6 +44,7 @@ const cards = {
         'Удаление ключей',
         'Добавление ключей',
         'Переименование ключей',
+        'Перемещение ключа',
       ],
       link: '/ru/format-json',
       link_text: 'перейти',
@@ -52,24 +53,31 @@ const cards = {
   en: [
     {
       h2: 'HTML',
-      img_url: 'services-image1.png',
+      img_url: 'html-image.webp',
       img_alt: 'HTML format image',
       list: [
-        'Formatting',
+        'Format',
+        'Minify',
         'Remove tags',
         'Remove attributes',
         'Remove empty lines',
         'Escaping',
-        'Minify',
       ],
       link: '/ru/format-html',
       link_text: 'open',
     },
     {
       h2: 'JSON',
-      img_url: 'services-image1.png',
+      img_url: 'json-image.webp',
       img_alt: 'JSON format image',
-      list: ['Formatting', 'Minify', 'Remove keys', 'Add keys', 'Rename keys'],
+      list: [
+        'Format',
+        'Minify',
+        'Remove key',
+        'Add key',
+        'Rename key',
+        'Move key',
+      ],
       link: '/ru/format-json',
       link_text: 'open',
     },
@@ -138,10 +146,10 @@ export default async function Page({
       </section>
       <section className="services">
         <div className="services-container">
+          <span className="point point-circe"></span>
+          <span className="point point-circe"></span>
+          <span className="point point-circe"></span>
           <div className="services-inner">
-            <span className="point point-circe"></span>
-            <span className="point point-circe"></span>
-            <span className="point point-circe"></span>
             {cards[lang].map((el, i) => (
               <div className="services-item" key={i}>
                 <div className="services-box">
@@ -176,7 +184,7 @@ export default async function Page({
         <div className="container">
           <div className="footer-inner">
             <img src="/mail.svg" alt="mail" />
-            <div className="footer-mail">test-mail@gmail.com</div>
+            <div className="footer-mail">json-html@gmail.com</div>
           </div>
         </div>
       </footer>

@@ -57,13 +57,13 @@ export async function generateMetadata({
       title: t.meta_title,
       description: t.meta_description,
       url: `${baseUrl}/${lang}`,
-      siteName: 'TextScope',
+      siteName: 'JSON HTML format',
       images: [
         {
-          url: `${baseUrl}/og/jg-${lang}.png`,
+          url: `${baseUrl}/og-${lang}-image.png`,
           width: 1200,
           height: 630,
-          alt: 'Text Analysis Preview',
+          alt: 'JSON HTML format',
         },
       ],
       locale: lang === 'ru' ? 'ru_RU' : 'en_US',

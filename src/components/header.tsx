@@ -14,11 +14,11 @@ const translations = {
 export default function Header({ lang }: { lang: Lang }) {
   const t = translations[lang];
   return (
-    <header className="header">
+    <header className="service-header">
       <Link href={`/${lang}`}>
         <svg
           version="1.1"
-          className="header__logo"
+          className="service-logo"
           x="0px"
           y="0px"
           viewBox="0 0 1813.7 1748.7"
@@ -38,7 +38,7 @@ export default function Header({ lang }: { lang: Lang }) {
         </svg>
       </Link>
 
-      <h1 className="header__title">{t.h1}</h1>
+      <h1 className="service-title">{t.h1}</h1>
     </header>
   );
 }

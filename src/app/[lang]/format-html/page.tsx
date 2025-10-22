@@ -1,7 +1,7 @@
 import { Lang } from '../../../types/lang';
-import TextInput from './input';
+import TextInput from './html-input';
 import { Metadata } from 'next';
-import Output from './output';
+import Output from './html-output';
 import './processor.scss';
 import Header from '@/components/header';
 
@@ -19,6 +19,8 @@ const translations = {
       'HTML parsing tools and techniques: formatting, escaping, normalization, editing and minify',
   },
 } as const;
+
+
 
 export async function generateMetadata({
   params,

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import './output.scss';
-import { buttonIds, useTextStore } from '@/store/text-store';
+import './html-output.scss';
+import { buttonIds, useTextStore } from '@/store/html-store';
 import CommitButton from './commit-button';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';

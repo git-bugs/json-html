@@ -1,4 +1,4 @@
-import { useTextStore } from '@/store/text-store';
+import { useTextStore } from '@/store/html-store';
 
 export default function CommitButton() {
   const { originalText, processedText, commitProcessedToOriginal } =

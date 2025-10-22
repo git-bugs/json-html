@@ -1,4 +1,4 @@
-.header {
+.service-header {
   height: 48px;
   background: transparent;
   display: flex;
@@ -10,12 +10,12 @@
   }
 }
 
-.header__logo {
+.service-logo {
   fill: var(--bg);
   margin-right: 16px;
 }
 
-.header__title {
+.service-title {
   font-size: 18px;
   color: var(--text-light);
   font-weight: 400;

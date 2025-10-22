@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-import './input.scss';
+import './html-input.scss';
 import ErrorWidget from '@/components/errorWidget';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
-import { useTextStore } from '@/store/text-store';
+import { useTextStore } from '@/store/html-store';
 
 const translation = {
   ru: {

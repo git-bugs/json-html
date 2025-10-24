@@ -1,0 +1,44 @@
+@media (max-width: 1599px) {
+  .input-name {
+    display: none;
+  }
+}
+
+@media (max-width: 840px) {
+  .html-format-container {
+    min-height: 100vh;
+  }
+  .html-format {
+    display: block;
+  }
+  .input-container,
+  .output-container {
+    width: 100%;
+  }
+  .input-container {
+    min-height: 320px;
+    flex: 0;
+  }
+  .input-textarea {
+    border: 1px solid var(--grey-lines);
+  }
+  .output-container {
+    // min-height: 400px;
+    flex: 1;
+  }
+  .output-commit {
+    img {
+      transform: rotate(90deg);
+    }
+  }
+  .output-content {
+    flex: 1;
+    height: 100%;
+    display: flex;
+  }
+  .output-textarea {
+ 
+    flex: 1;
+    min-height: 600px;
+  }
+}

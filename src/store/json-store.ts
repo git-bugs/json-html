@@ -27,7 +27,7 @@ export const buttonIds = {
   BUTTON_6: 'minify',
 };
 
-export const useHtmlStore = create<State>((set, get) => ({
+export const useJsonStore = create<State>((set, get) => ({
   originalText: '',
   processedText: '',
   activeButtonId: '',

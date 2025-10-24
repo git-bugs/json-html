@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import './html-output.scss';
-import { buttonIds, useTextStore } from '@/store/html-store';
+import { buttonIds, useHtmlStore } from '@/store/html-store';
 import CommitButton from './commit-button';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
@@ -59,7 +59,7 @@ export default function Output() {
     resetToOriginal,
     escaping,
     minify,
-  } = useTextStore();
+  } = useHtmlStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
@@ -109,17 +109,17 @@ export default function Output() {
   };
 
   return (
-    <div className="output__container">
-      <div className="output__header">
+    <div className="output-container">
+      <div className="output-header">
         <button
-          className="output__reset"
+          className="output-reset"
           onClick={resetToOriginal}
           disabled={!processedText || isProcessing}
         >
           {t.button_reset}
         </button>
         <button
-          className={`output__button ${
+          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_1 ? 'active' : ''
           }`}
           onClick={removeAttributes}
@@ -132,7 +132,7 @@ export default function Output() {
           {t.button_delete_attr}
         </button>
         <button
-          className={`output__button ${
+          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_2 ? 'active' : ''
           }`}
           onClick={removeTags}
@@ -145,7 +145,7 @@ export default function Output() {
           {t.button_delete_tags}
         </button>
         <button
-          className={`output__button ${
+          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_3 ? 'active' : ''
           }`}
           onClick={removeEmptyLines}
@@ -158,7 +158,7 @@ export default function Output() {
           {t.button_delete_empty}
         </button>
         <button
-          className={`output__button ${
+          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_4 ? 'active' : ''
           }`}
           onClick={format}
@@ -171,7 +171,7 @@ export default function Output() {
           {t.button_format}
         </button>
         <button
-          className={`output__button ${
+          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_5 ? 'active' : ''
           }`}
           onClick={escaping}
@@ -184,7 +184,7 @@ export default function Output() {
           {t.button_escaping}
         </button>
         <button
-          className={`output__button ${
+          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_6 ? 'active' : ''
           }`}
           onClick={minify}
@@ -198,8 +198,8 @@ export default function Output() {
         </button>
       </div>
 
-      <div className="output__controls">
-        <div className="output__stats">
+      <div className="output-controls">
+        <div className="output-stats">
           <CommitButton />
           <span>
             {stats.characters} {t.stats_chars}
@@ -211,13 +211,11 @@ export default function Output() {
             {stats.lines} {t.stats_lines}
           </span>
         </div>
-        <div className="output__buttons">
+        <div className="output-buttons">
           <button
             onClick={handleCopy}
             disabled={!processedText || isProcessing}
-            className={`output__button copy__btn ${
-              copySuccess ? 'success' : ''
-            }`}
+            className={`output-button copy-btn ${copySuccess ? 'success' : ''}`}
           >
             {copySuccess ? `✓ ${t.copy_success}!` : t.copy_button}
           </button>
@@ -225,7 +223,7 @@ export default function Output() {
           <button
             onClick={handleDownload}
             disabled={!processedText || isProcessing}
-            className="output__button download__btn"
+            className="output-button download-btn"
           >
             {t.download_button}
           </button>
@@ -233,19 +231,19 @@ export default function Output() {
       </div>
 
       {isProcessing && (
-        <div className="processing__indicator">
+        <div className="processing-indicator">
           <div className="spinner"></div>
           <span>{t.processing}</span>
         </div>
       )}
       {!isProcessing && (
-        <div className="output__content">
+        <div className="output-content">
           <textarea
             ref={textareaRef}
             value={processedText}
             id="output"
             readOnly
-            className="output__textarea"
+            className="output-textarea"
             placeholder={t.textarea_placeholder}
             rows={12}
           />

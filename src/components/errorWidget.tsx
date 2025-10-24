@@ -38,12 +38,12 @@ export default function ErrorWidget({
   if (!isVisible) return null;
 
   return (
-    <div className="status__widget">
+    <div className="status-widget">
       {isVisible && (
-        <div className="status__widget-error">
+        <div className="status-widget-error">
           <span>{errorMessage || 'Error'}</span>
           <button
-            className="status__widget-close"
+            className="status-widget-close"
             onClick={handleClose}
             aria-label="Close"
           >

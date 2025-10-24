@@ -3,7 +3,8 @@
   background: transparent;
   display: flex;
   align-items: center;
-  background: var(--dark);
+  background: var(--text);
+  color: var(--bg);
   padding: 0 12px;
   a {
     line-height: 1;
@@ -19,4 +20,5 @@
   font-size: 18px;
   color: var(--text-light);
   font-weight: 400;
+  text-transform: uppercase;
 }

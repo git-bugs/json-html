@@ -2,17 +2,7 @@ import { Lang } from '../types/lang';
 import './header.scss';
 import Link from 'next/link';
 
-const translations = {
-  ru: {
-    h1: 'HTML - форматирование, экранирование,минификация, нормализация и редактирование текста',
-  },
-  en: {
-    h1: 'HTML - formatting, escaping, minification, normalization and text editing',
-  },
-} as const;
-
-export default function Header({ lang }: { lang: Lang }) {
-  const t = translations[lang];
+export default function Header({ lang, title }: { lang: Lang; title: string }) {
   return (
     <header className="service-header">
       <Link href={`/${lang}`}>
@@ -38,7 +28,7 @@ export default function Header({ lang }: { lang: Lang }) {
         </svg>
       </Link>
 
-      <h1 className="service-title">{t.h1}</h1>
+      <h1 className="service-title">{title}</h1>
     </header>
   );
 }

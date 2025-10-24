@@ -30,6 +30,9 @@ const translations = {
       'Бесплатные онлайн-инструменты для форматирования, проверки и преобразования HTML и JSON. Редактируйте и очищайте код прямо в браузере.',
     meta_keywords:
       'HTML форматирование, JSON валидация, онлайн инструменты, форматирование кода, HTML в JSON, JSON в HTML, валидатор синтаксиса, beautify код, очистка HTML, минификация JSON, инструменты разработчика, веб-инструменты',
+    schema_name: 'JSON HTML формат',
+    schema_description:
+      'Комплексный набор веб-инструментов для работы с кодом: форматирование HTML и JSON с настраиваемыми параметрами, преобразование между различными форматами данных. Сервис работает полностью в браузере без загрузки файлов на сервер, обеспечивая безопасность и конфиденциальность данных пользователей.',
   },
   en: {
     meta_title:
@@ -38,6 +41,9 @@ const translations = {
       'Free online tools to format, validate, and convert HTML and JSON code. Edit, clean, and beautify your code instantly in the browser.',
     meta_keywords:
       'HTML formatting, JSON validation, online tools, code formatter, HTML to JSON, JSON to HTML, syntax validator, beautify code, clean HTML, minify JSON, developer tools, web tools',
+    schema_name: 'JSON HTML format',
+    schema_description:
+      'Comprehensive set of web tools for working with code: HTML and JSON formatting with customizable parameters, conversion between different data formats. The service works entirely in the browser without uploading files to the server, ensuring the security and confidentiality of user data.',
   },
 };
 
@@ -60,7 +66,7 @@ export async function generateMetadata({
       siteName: 'JSON HTML format',
       images: [
         {
-          url: `${baseUrl}/og-${lang}-image.png`,
+          url: `${baseUrl}/og-${lang}-image.jpg`,
           width: 1200,
           height: 630,
           alt: 'JSON HTML format',
@@ -93,8 +99,66 @@ export default async function RootLayout({
   params: Promise<{ lang: Lang }>;
 }>) {
   const { lang } = await params;
+  const t = translations[lang] || translations.en;
+  const baseUrl = process.env.BASE_URL;
   return (
     <html lang={lang === 'ru' ? 'ru-RU' : 'en-EN'}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  name: 'JSON HTML format',
+                  url: `${baseUrl}/${lang}`,
+                  logo: `${baseUrl}/logo.svg`,
+                  sameAs: [],
+                },
+                {
+                  '@type': 'WebSite',
+                  name: t.schema_name,
+                  url: `${baseUrl}/${lang}`,
+                  inLanguage: lang,
+                },
+                {
+                  '@type': 'WebPage',
+                  name: 'Home',
+                  url: `${baseUrl}/${lang}`,
+                  description: t.schema_description,
+                  inLanguage: lang,
+                  mainEntity: {
+                    '@type': 'ItemList',
+                    name: 'Available Services',
+                    itemListElement: [
+                      {
+                        '@type': 'ListItem',
+                        position: 1,
+                        url: `${baseUrl}/${lang}/html-format`,
+                        name:
+                          lang == 'en'
+                            ? 'HTML formatting'
+                            : 'HTML форматирование',
+                      },
+                      {
+                        '@type': 'ListItem',
+                        position: 2,
+                        url: `${baseUrl}/${lang}/json-format`,
+                        name:
+                          lang == 'en'
+                            ? 'JSON formatting'
+                            : 'JSON форматирование',
+                      },
+                    ],
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </head>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         {children}
       </body>

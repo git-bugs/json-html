@@ -2,26 +2,26 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-import './json-input.scss';
+import './html-input.scss';
 import ErrorWidget from '@/components/errorWidget';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
-import { useTextStore } from '@/store/html-store';
+import { useHtmlStore } from '@/store/html-store';
 
 const translation = {
   ru: {
-    file_end_error: 'Пожалуйста, выберите json файл',
+    file_end_error: 'Пожалуйста, выберите текстовый файл',
     read_error: 'Ошибка при чтении файла',
-    select_text: 'Пожалуйста, выберите json файл',
+    select_text: 'Пожалуйста, выберите текстовый файл',
     clear_button: 'Очистить',
     enter_button: 'Вставить из файла',
     textarea_placeholder:
       'Введите текст, перетащите файл, вставьте из буфера или выберите файл...',
   },
   en: {
-    file_end_error: 'Please select a json file',
+    file_end_error: 'Please select a text file',
     read_error: 'Error reading file',
-    select_text: 'Please select a json file',
+    select_text: 'Please select a text file',
     clear_button: 'Clear',
     enter_button: 'Paste from file',
     textarea_placeholder:
@@ -29,11 +29,11 @@ const translation = {
   },
 } as const;
 
-export default function JsonInput() {
+export default function TextInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');
-  const { fileName, setFileName, originalText, setOriginal } = useTextStore();
+  const { fileName, setFileName, originalText, setOriginal } = useHtmlStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
@@ -52,10 +52,7 @@ export default function JsonInput() {
   };
 
   const readFile = (file: File) => {
-    if (
-      !file.type.startsWith('application/json') &&
-      !file.name.endsWith('.json')
-    ) {
+    if (!file.type.startsWith('text/') && !file.name.endsWith('.txt')) {
       setErrorMessage(t.file_end_error);
       return;
     }
@@ -145,32 +142,30 @@ export default function JsonInput() {
   };
 
   return (
-    <div className="input__container">
-      <div className="input__box">
-        <div className="button__panel">
-          <button onClick={handleClear} className="input__button input__clear">
+    <div className="input-container">
+      <div className="input-box">
+        <div className="button-panel">
+          <button onClick={handleClear} className="input-button input-clear">
             {t.clear_button}
           </button>
 
-          <label className="input__button input__file">
+          <label className="input-button input-file">
             {t.enter_button}
             <input
               type="file"
               ref={fileInputRef}
               onChange={handleFile}
-              className="hidden__input"
+              className="hidden-input"
             />
           </label>
         </div>
-        <div className="input__stats">
-          {originalText != '' && (
-            <span className="input__name">{fileName}</span>
-          )}
-          <span className="input__size">{calculateTextSize(originalText)}</span>
+        <div className="input-stats">
+          {originalText != '' && <span className="input-name">{fileName}</span>}
+          <span className="input-size">{calculateTextSize(originalText)}</span>
         </div>
       </div>
       <textarea
-        id="input__textarea"
+        id="input-textarea"
         value={originalText}
         onChange={(e) => setOriginal(e.target.value)}
         onDragOver={handleDragOver}
@@ -178,7 +173,7 @@ export default function JsonInput() {
         onDrop={handleDrop}
         onPaste={handleTextareaPaste}
         placeholder={t.textarea_placeholder}
-        className="input__textarea"
+        className="input-textarea"
       />
       <ErrorWidget errorMessage={errorMessege} onClose={handleCloseStatus} />
     </div>

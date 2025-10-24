@@ -1,26 +1,28 @@
 import { Lang } from '../../../types/lang';
-import TextInput from './html-input';
+import JsonInput from './json-input';
 import { Metadata } from 'next';
-import Output from './html-output';
-import './processor.scss';
+// import Output from './output';
+
+import './format-json.scss';
+
 import Header from '@/components/header';
 
 const translations = {
   ru: {
     meta_title:
-      'HTML: форматирование, экранирование,минификация, нормализация и редактирование текста',
+      'JSON: форматирование, экранирование,минификация, нормализация и редактирование текста',
     meta_description:
       'Инструменты и методы анализа HTML: форматирование, экранирование, нормализация, редактирование и минификация',
+    header_title: 'JSON форматирование',
   },
   en: {
     meta_title:
       'HTML: formatting, escaping, minification, normalization and text editing',
     meta_description:
       'HTML parsing tools and techniques: formatting, escaping, normalization, editing and minify',
+    header_title: 'JSON formatting',
   },
 } as const;
-
-
 
 export async function generateMetadata({
   params,
@@ -60,18 +62,18 @@ export async function generateMetadata({
   };
 }
 
-export default async function TextProcessor({
+export default async function JsonProcessor({
   params,
 }: {
   params: Promise<{ lang: Lang }>;
 }) {
   const { lang } = await params;
   return (
-    <section className="processor">
-      <Header lang={lang} />
+    <section className="json-processor">
+      <Header lang={lang} title={translations[lang].header_title} />
       <main>
-        <TextInput />
-        <Output />
+        <JsonInput />
+        {/* <Output /> */}
       </main>
     </section>
   );

@@ -25,22 +25,18 @@ const inter = Inter({
 const translations = {
   ru: {
     meta_title:
-      'HTML и JSON онлайн — форматирование, валидация и преобразование кода',
+      'JSON и HTML онлайн — форматирование, валидация и преобразование кода',
     meta_description:
-      'Бесплатные онлайн-инструменты для форматирования, проверки и преобразования HTML и JSON. Редактируйте и очищайте код прямо в браузере.',
-    meta_keywords:
-      'HTML форматирование, JSON валидация, онлайн инструменты, форматирование кода, HTML в JSON, JSON в HTML, валидатор синтаксиса, beautify код, очистка HTML, минификация JSON, инструменты разработчика, веб-инструменты',
+      'Бесплатные онлайн-инструменты для форматирования, проверки и преобразования JSON и HTML. Редактируйте и очищайте код прямо в браузере.',
     schema_name: 'JSON HTML формат',
     schema_description:
       'Комплексный набор веб-инструментов для работы с кодом: форматирование HTML и JSON с настраиваемыми параметрами, преобразование между различными форматами данных. Сервис работает полностью в браузере без загрузки файлов на сервер, обеспечивая безопасность и конфиденциальность данных пользователей.',
   },
   en: {
     meta_title:
-      'HTML and JSON Online — Formatting, Validation, and Code Conversion',
+      'JSON and HTML Online — Formatting, Validation, and Code Conversion',
     meta_description:
-      'Free online tools to format, validate, and convert HTML and JSON code. Edit, clean, and beautify your code instantly in the browser.',
-    meta_keywords:
-      'HTML formatting, JSON validation, online tools, code formatter, HTML to JSON, JSON to HTML, syntax validator, beautify code, clean HTML, minify JSON, developer tools, web tools',
+      'Free online tools to format, validate, and convert JSON and HTML code. Edit, clean, and beautify your code instantly in the browser.',
     schema_name: 'JSON HTML format',
     schema_description:
       'Comprehensive set of web tools for working with code: HTML and JSON formatting with customizable parameters, conversion between different data formats. The service works entirely in the browser without uploading files to the server, ensuring the security and confidentiality of user data.',
@@ -58,7 +54,6 @@ export async function generateMetadata({
   return {
     title: t.meta_title,
     description: t.meta_description,
-    keywords: t.meta_keywords,
     openGraph: {
       title: t.meta_title,
       description: t.meta_description,

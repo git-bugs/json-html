@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import './html-output.scss';
-import { buttonIds, useHtmlStore } from '@/store/html-store';
+import './json-output.scss';
+import { buttonIds, useJsonStore } from '@/store/json-store';
 import CommitButton from './commit-button';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
@@ -10,11 +10,13 @@ import { Lang } from '../../../types/lang';
 const translation = {
   ru: {
     button_reset: 'Сбросить',
-    button_delete_attr: 'удалить аттрибуты',
-    button_delete_tags: 'удалить теги',
-    button_delete_empty: 'удалить пустые строки',
     button_format: 'форматирование',
-    button_escaping: 'экранирование',
+    BUTTON_MINIFY: 'минифицировать',
+    button_remove_key: 'удалить ключ',
+    button_add_key: 'добавить ключ',
+    button_rename_key: 'переименовать ключ',
+    button_move_key: 'переместить ключ',
+
     textarea_placeholder: 'Здесь появится результат обработки...',
     stats_chars: 'символов',
     stats_words: 'слов',
@@ -23,15 +25,16 @@ const translation = {
     copy_button: 'копировать',
     copy_success: 'Скопировано',
     download_button: 'скачать',
-    minify_button: 'минифицировать',
   },
   en: {
     button_reset: 'reset',
-    button_delete_attr: 'remove attributes',
-    button_delete_tags: 'remove tags',
-    button_delete_empty: 'remove empty lines',
     button_format: 'formatting',
-    button_escaping: 'escaping',
+    BUTTON_MINIFY: 'minify',
+    button_remove_key: 'remove key',
+    button_add_key: 'add key',
+    button_rename_key: 'rename key',
+    button_move_key: 'move key',
+
     textarea_placeholder: 'The processing result will appear here...',
     stats_chars: 'chars',
     stats_words: 'words',
@@ -40,39 +43,38 @@ const translation = {
     copy_button: 'copy',
     copy_success: 'Success',
     download_button: 'download',
-    minify_button: 'minify',
   },
 } as const;
 
-export default function HtmlOutput() {
+export default function JsonOutput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copySuccess, setCopySuccess] = useState(false);
   const {
     activeButtonId,
-    processedText,
+    result,
     fileName,
     isProcessing,
-    removeAttributes,
-    removeTags,
-    removeEmptyLines,
+    addKey,
+    renameKey,
+    moveKey,
+    removeKey,
     format,
     resetToOriginal,
-    escaping,
     minify,
-  } = useHtmlStore();
+  } = useJsonStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
   const t = translation[lang];
 
   const handleCopy = async () => {
-    if (!processedText) return;
+    if (!result) return;
     try {
       if (textareaRef.current) {
         // textareaRef.current.select();
-        await navigator.clipboard.writeText(processedText);
+        await navigator.clipboard.writeText(result);
         setCopySuccess(true);
-        // onCopy?.(processedText);
+        // onCopy?.(result);
         setTimeout(() => setCopySuccess(false), 2000);
       }
     } catch (err) {
@@ -85,9 +87,9 @@ export default function HtmlOutput() {
   };
 
   const handleDownload = () => {
-    if (!processedText) return;
+    if (!result) return;
 
-    const blob = new Blob([processedText], { type: 'text/plain' });
+    const blob = new Blob([result], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -103,9 +105,9 @@ export default function HtmlOutput() {
   };
 
   const stats = {
-    characters: processedText.length,
-    words: processedText.trim() ? processedText.trim().split(/\s+/).length : 0,
-    lines: processedText.split('\n').length,
+    characters: result.length,
+    words: result.trim() ? result.trim().split(/\s+/).length : 0,
+    lines: result.split('\n').length,
   };
 
   return (
@@ -114,87 +116,77 @@ export default function HtmlOutput() {
         <button
           className="output-reset"
           onClick={resetToOriginal}
-          disabled={!processedText || isProcessing}
+          disabled={!result || isProcessing}
         >
           {t.button_reset}
         </button>
         <button
           className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_4 ? 'active' : ''
+            activeButtonId == buttonIds.BUTTON_1 ? 'active' : ''
           }`}
           onClick={format}
           disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_4
+            !result || isProcessing || activeButtonId == buttonIds.BUTTON_1
           }
         >
           {t.button_format}
         </button>
         <button
           className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_1 ? 'active' : ''
-          }`}
-          onClick={removeAttributes}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_1
-          }
-        >
-          {t.button_delete_attr}
-        </button>
-        <button
-          className={`output-button ${
             activeButtonId == buttonIds.BUTTON_2 ? 'active' : ''
           }`}
-          onClick={removeTags}
+          onClick={minify}
           disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_2
+            !result || isProcessing || activeButtonId == buttonIds.BUTTON_2
           }
         >
-          {t.button_delete_tags}
+          {t.BUTTON_MINIFY}
         </button>
         <button
           className={`output-button ${
             activeButtonId == buttonIds.BUTTON_3 ? 'active' : ''
           }`}
-          onClick={removeEmptyLines}
+          onClick={() => removeKey('id')}
           disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_3
+            !result || isProcessing || activeButtonId == buttonIds.BUTTON_3
           }
         >
-          {t.button_delete_empty}
+          {t.button_remove_key}
+        </button>
+
+        <button
+          className={`output-button ${
+            activeButtonId == buttonIds.BUTTON_4 ? 'active' : ''
+          }`}
+          onClick={addKey}
+          disabled={
+            !result || isProcessing || activeButtonId == buttonIds.BUTTON_4
+          }
+        >
+          {t.button_add_key}
         </button>
         <button
           className={`output-button ${
             activeButtonId == buttonIds.BUTTON_5 ? 'active' : ''
           }`}
-          onClick={escaping}
+          onClick={renameKey}
           disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_5
+            !result || isProcessing || activeButtonId == buttonIds.BUTTON_5
           }
         >
-          {t.button_escaping}
+          {t.button_rename_key}
         </button>
+
         <button
           className={`output-button ${
             activeButtonId == buttonIds.BUTTON_6 ? 'active' : ''
           }`}
-          onClick={minify}
+          onClick={moveKey}
           disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_6
+            !result || isProcessing || activeButtonId == buttonIds.BUTTON_6
           }
         >
-          {t.minify_button}
+          {t.button_move_key}
         </button>
       </div>
 
@@ -204,7 +196,7 @@ export default function HtmlOutput() {
           <div className="output-buttons">
             <button
               onClick={handleCopy}
-              disabled={!processedText || isProcessing}
+              disabled={!result || isProcessing}
               className={`output-button copy-btn ${
                 copySuccess ? 'success' : ''
               }`}
@@ -214,7 +206,7 @@ export default function HtmlOutput() {
 
             <button
               onClick={handleDownload}
-              disabled={!processedText || isProcessing}
+              disabled={!result || isProcessing}
               className="output-button download-btn"
             >
               {t.download_button}
@@ -244,7 +236,7 @@ export default function HtmlOutput() {
         <div className="output-content">
           <textarea
             ref={textareaRef}
-            value={processedText}
+            value={result}
             id="output"
             readOnly
             className="output-textarea"

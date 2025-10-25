@@ -1,4 +1,4 @@
-.input__container {
+.input-container {
   border: 1px solid var(--grey);
   border-radius: 8px;
   overflow: hidden;
@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-.input__box {
+.input-box {
   display: flex;
   background-color: var(--grey);
   align-items: center;
@@ -16,13 +16,13 @@
   transition: 0.2s;
 }
 
-.button__panel {
+.button-panel {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.input__button {
+.input-button {
   padding: 8px 16px;
   border: none;
   cursor: pointer;
@@ -32,21 +32,21 @@
   border-radius: 4px;
 }
 
-.input__clear {
+.input-clear {
   background: var(--red);
   &:hover {
     background: var(--red-hover);
   }
 }
 
-.input__file {
+.input-file {
   background: var(--blue);
   &:hover {
     background: var(--blue-hover);
   }
 }
 
-.input__textarea {
+.input-textarea {
   resize: none;
   width: 100%;
   padding: 16px;
@@ -62,11 +62,11 @@
   }
 }
 
-.hidden__input {
+.hidden-input {
   display: none;
 }
 
-.input__stats {
+.input-stats {
   font-size: 12px;
   color: var(--text-grey);
   font-family: var(--font-jet-mono);
@@ -80,7 +80,7 @@
   }
 }
 
-.input__name {
+.input-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -1,10 +1,9 @@
-.json-processor {
+.json-format-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  main {
-    display: flex;
-    height: 100%;
-    flex: 1;
-  }
+}
+.json-format {
+  display: flex;
+  flex: 1;
 }

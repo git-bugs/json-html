@@ -1,7 +1,7 @@
 import { Lang } from '../../../types/lang';
-import TextInput from './html-input';
+import HtmlInput from './html-input';
 import { Metadata } from 'next';
-import Output from './html-output';
+import HtmlOutput from './html-output';
 import './html.scss';
 import './html-media.scss';
 import Header from '@/components/header';
@@ -101,8 +101,8 @@ export default async function TextProcessor({
       <section className="html-format-container">
         <Header lang={lang} title={translations[lang].header_title} />
         <main className="html-format">
-          <TextInput />
-          <Output />
+          <HtmlInput />
+          <HtmlOutput />
         </main>
       </section>
     </>

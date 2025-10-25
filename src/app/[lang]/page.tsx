@@ -6,34 +6,19 @@ import Image from 'next/image';
 
 const translations = {
   ru: {
-    main_h1: 'Онлайн форматирование и преобразование HTML и JSON',
+    main_h1: 'Онлайн форматирование и преобразование JSON и HTML',
     main_text:
       'Бесплатные онлайн-инструменты для форматирования, проверки и преобразования HTML и JSON-кода в реальном времени.',
   },
   en: {
-    main_h1: 'HTML and JSON online formatting and conversion',
+    main_h1: 'JSON and HTML online formatting and conversion',
     main_text:
-      'Free online tools for working with HTML and JSON. Format, validate, transform and clean up code in real time.',
+      'Free online tools for working with JSON and HTML. Format, validate, transform and clean up code in real time.',
   },
 } as const;
 
 const cards = {
   ru: [
-    {
-      h2: 'HTML',
-      img_url: 'html-image.webp',
-      img_alt: 'HTML Форматирование картинка',
-      list: [
-        'Форматирование',
-        'Удаление тегов',
-        'Удаление аттрибутов',
-        'Удаление пустых строк',
-        'Экранирование',
-        'Минификация',
-      ],
-      link: '/ru/html-format',
-      link_text: 'перейти',
-    },
     {
       h2: 'JSON',
       img_url: 'json-image.webp',
@@ -49,23 +34,23 @@ const cards = {
       link: '/ru/json-format',
       link_text: 'перейти',
     },
-  ],
-  en: [
     {
       h2: 'HTML',
       img_url: 'html-image.webp',
-      img_alt: 'HTML format image',
+      img_alt: 'HTML Форматирование картинка',
       list: [
-        'Format',
-        'Minify',
-        'Remove tags',
-        'Remove attributes',
-        'Remove empty lines',
-        'Escaping',
+        'Форматирование',
+        'Удаление тегов',
+        'Удаление аттрибутов',
+        'Удаление пустых строк',
+        'Экранирование',
+        'Минификация',
       ],
-      link: '/en/html-format',
-      link_text: 'open',
+      link: '/ru/html-format',
+      link_text: 'перейти',
     },
+  ],
+  en: [
     {
       h2: 'JSON',
       img_url: 'json-image.webp',
@@ -79,6 +64,21 @@ const cards = {
         'Move key',
       ],
       link: '/en/json-format',
+      link_text: 'open',
+    },
+    {
+      h2: 'HTML',
+      img_url: 'html-image.webp',
+      img_alt: 'HTML format image',
+      list: [
+        'Format',
+        'Minify',
+        'Remove tags',
+        'Remove attributes',
+        'Remove empty lines',
+        'Escaping',
+      ],
+      link: '/en/html-format',
       link_text: 'open',
     },
   ],

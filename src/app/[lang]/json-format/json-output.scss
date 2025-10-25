@@ -73,10 +73,14 @@
 
 .output-controls-box {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   border-bottom: 1px solid #e1e5e9;
   padding: 8px;
+  position: relative;
   .output-commit {
+    position: absolute;
+    left: 6px;
+    top: 6px;
     border: none;
     border-radius: 4px;
     padding: 6px 12px;

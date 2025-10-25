@@ -33,11 +33,16 @@ export default function JsonInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');
-  const { fileName, setFileName, originalText, setOriginal } = useJsonStore();
+  const { setLang, fileName, setFileName, original, setOriginal } =
+    useJsonStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
   const t = translation[lang];
+
+  useEffect(() => {
+    setLang(lang);
+  }, [lang]);
 
   const handleCloseStatus = () => {
     setErrorMessage('');
@@ -128,7 +133,7 @@ export default function JsonInput() {
   };
 
   function calculateTextSize(text: string) {
-    const sizeInBytes = new TextEncoder().encode(originalText).length;
+    const sizeInBytes = new TextEncoder().encode(original).length;
     if (sizeInBytes === 0) return '0 B';
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB'];
@@ -145,40 +150,38 @@ export default function JsonInput() {
   };
 
   return (
-    <div className="input__container">
-      <div className="input__box">
-        <div className="button__panel">
-          <button onClick={handleClear} className="input__button input__clear">
+    <div className="input-container">
+      <div className="input-box">
+        <div className="button-panel">
+          <button onClick={handleClear} className="input-button input-clear">
             {t.clear_button}
           </button>
 
-          <label className="input__button input__file">
+          <label className="input-button input-file">
             {t.enter_button}
             <input
               type="file"
               ref={fileInputRef}
               onChange={handleFile}
-              className="hidden__input"
+              className="hidden-input"
             />
           </label>
         </div>
-        <div className="input__stats">
-          {originalText != '' && (
-            <span className="input__name">{fileName}</span>
-          )}
-          <span className="input__size">{calculateTextSize(originalText)}</span>
+        <div className="input-stats">
+          {original != '' && <span className="input-name">{fileName}</span>}
+          <span className="input-size">{calculateTextSize(original)}</span>
         </div>
       </div>
       <textarea
-        id="input__textarea"
-        value={originalText}
+        id="input-textarea"
+        value={original}
         onChange={(e) => setOriginal(e.target.value)}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onPaste={handleTextareaPaste}
         placeholder={t.textarea_placeholder}
-        className="input__textarea"
+        className="input-textarea"
       />
       <ErrorWidget errorMessage={errorMessege} onClose={handleCloseStatus} />
     </div>

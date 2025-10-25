@@ -29,7 +29,7 @@ const translation = {
   },
 } as const;
 
-export default function TextInput() {
+export default function HtmlInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');

@@ -1,19 +1,16 @@
 .service-header {
-  height: 48px;
   background: transparent;
   display: flex;
   align-items: center;
   background: var(--text);
   color: var(--bg);
-  padding: 0 12px;
+  padding: 8px 12px;
   a {
     line-height: 1;
   }
-}
-
-.service-logo {
-  fill: var(--bg);
-  margin-right: 16px;
+  img {
+    margin-right: 16px;
+  }
 }
 
 .service-title {

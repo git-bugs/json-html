@@ -7,7 +7,7 @@
   position: relative;
 }
 
-.output-header {
+.output-box {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -15,6 +15,47 @@
   background: #f8f9fa;
   border-bottom: 1px solid #e1e5e9;
   flex-wrap: wrap;
+}
+
+.output-accept {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px 8px 40px;
+  background: #2746d1;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  position: relative;
+  &:hover {
+    background: #2441c2;
+  }
+  img {
+    position: absolute;
+    left: 8px;
+    top: 4px;
+  }
+}
+
+.output-reset {
+  padding: 8px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--red);
+  color: var(--text-light);
+  &:hover:not(:disabled) {
+    background: var(--red-hover);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .output-button {
@@ -40,25 +81,6 @@
   }
 }
 
-.output-reset {
-  padding: 8px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  background: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--red);
-  color: var(--text-light);
-  &:hover:not(:disabled) {
-    background: var(--blue-hover);
-  }
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
 .output-buttons {
   display: flex;
   gap: 12px;
@@ -77,20 +99,6 @@
   border-bottom: 1px solid #e1e5e9;
   padding: 8px;
   position: relative;
-  .output-commit {
-    position: absolute;
-    left: 6px;
-    top: 6px;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    background: #2746d1;
-    color: #fff;
-    cursor: pointer;
-    &:hover {
-      background: #2441c2;
-    }
-  }
 }
 
 .output-stats {
@@ -148,6 +156,38 @@
 
 .clear-btn:hover:not(:disabled) {
   background: #dc2626;
+}
+
+#keys-select,
+#operations-select {
+  font-weight: 700;
+  font-family: var(--font-jet-mono);
+}
+#operations-select {
+  text-transform: uppercase;
+}
+
+.select-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #edf2f7;
+  padding: 4px 6px;
+  border-radius: 2px;
+  span {
+    border-radius: 4px;
+    cursor: default;
+    font-size: 14px;
+  }
+}
+
+.key-input {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  font-weight: 700;
 }
 
 .output-content {

@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './json-output.scss';
 import { buttonIds, useJsonStore } from '@/store/json-store';
-import CommitButton from './commit-button';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
 
 const translation = {
   ru: {
+    BUTTON_ACCEPT: 'отправить',
     button_reset: 'Сбросить',
     button_format: 'форматирование',
     BUTTON_MINIFY: 'минифицировать',
@@ -27,6 +27,7 @@ const translation = {
     download_button: 'скачать',
   },
   en: {
+    BUTTON_ACCEPT: 'send',
     button_reset: 'reset',
     button_format: 'formatting',
     BUTTON_MINIFY: 'minify',
@@ -49,11 +50,16 @@ const translation = {
 export default function JsonOutput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [selectedKey, setSelectedKey] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [keyInput, setKeyInput] = useState('');
   const {
     activeButtonId,
+    original,
     result,
     fileName,
     isProcessing,
+    jsonKeys,
     addKey,
     renameKey,
     moveKey,
@@ -61,8 +67,8 @@ export default function JsonOutput() {
     format,
     resetToOriginal,
     minify,
+    acceptResult,
   } = useJsonStore();
-
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
   const t = translation[lang];
@@ -110,9 +116,25 @@ export default function JsonOutput() {
     lines: result.split('\n').length,
   };
 
+  useEffect(() => {
+    if (jsonKeys.length > 0) {
+      setSelectedKey(jsonKeys[0]);
+    }
+  }, [jsonKeys]);
+
+  useEffect(() => {
+    setSelectedOption('removeKey');
+  }, []);
+
   return (
     <div className="output-container">
-      <div className="output-header">
+      <div className="output-box">
+        {result.trim() !== original.trim() && (
+          <button className="output-accept" onClick={acceptResult}>
+            <img src="/arrow_left.svg" alt="" />
+            <p>{t.BUTTON_ACCEPT}</p>
+          </button>
+        )}
         <button
           className="output-reset"
           onClick={resetToOriginal}
@@ -120,79 +142,69 @@ export default function JsonOutput() {
         >
           {t.button_reset}
         </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_1 ? 'active' : ''
-          }`}
-          onClick={format}
-          disabled={
-            !result || isProcessing || activeButtonId == buttonIds.BUTTON_1
-          }
-        >
-          {t.button_format}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_2 ? 'active' : ''
-          }`}
-          onClick={minify}
-          disabled={
-            !result || isProcessing || activeButtonId == buttonIds.BUTTON_2
-          }
-        >
-          {t.BUTTON_MINIFY}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_3 ? 'active' : ''
-          }`}
-          onClick={() => removeKey('id')}
-          disabled={
-            !result || isProcessing || activeButtonId == buttonIds.BUTTON_3
-          }
-        >
-          {t.button_remove_key}
-        </button>
+      </div>
 
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_4 ? 'active' : ''
-          }`}
-          onClick={addKey}
-          disabled={
-            !result || isProcessing || activeButtonId == buttonIds.BUTTON_4
-          }
-        >
-          {t.button_add_key}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_5 ? 'active' : ''
-          }`}
-          onClick={renameKey}
-          disabled={
-            !result || isProcessing || activeButtonId == buttonIds.BUTTON_5
-          }
-        >
-          {t.button_rename_key}
-        </button>
+      <div className="output-box">
+        <div className="select-box">
+          <span className="select-box-title">Опция</span>
+          <select
+            name="operations-select"
+            id="operations-select"
+            className="output-button"
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+          >
+            <option value="format">{t.button_format}</option>
+            <option value="minify">{t.BUTTON_MINIFY}</option>
+            <option value="removeKey">{t.button_remove_key}</option>
+            <option value="addKey">{t.button_add_key}</option>
+            <option value="renameKey">{t.button_rename_key}</option>
+            {/* <option value="moveKey">{t.button_move_key}</option> */}
+          </select>
+        </div>
 
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_6 ? 'active' : ''
-          }`}
-          onClick={moveKey}
-          disabled={
-            !result || isProcessing || activeButtonId == buttonIds.BUTTON_6
-          }
-        >
-          {t.button_move_key}
-        </button>
+        {jsonKeys.length > 0 &&
+          selectedOption !== 'format' &&
+          selectedOption !== 'minify' &&
+          selectedOption !== 'addKey' && (
+            <div className="select-box">
+              <span>Ключ</span>
+              <select
+                id="keys-select"
+                className="output-button"
+                name="keys-select"
+                onChange={(e) => setSelectedKey(e.target.value)}
+                value={selectedKey}
+              >
+                {jsonKeys.map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+        {(selectedOption === 'addKey' || selectedOption === 'renameKey') && (
+          <div className="select-box">
+            <span>Новое значение</span>
+            <input
+              type="text"
+              className="key-input"
+              onChange={(e) => setKeyInput(e.target.value)}
+            />
+          </div>
+        )}
+
+        {jsonKeys.length > 0 &&
+          selectedOption !== 'format' &&
+          selectedOption !== 'minify' && (
+            <button className="output-button">ПРинять</button>
+          )}
       </div>
 
       <div className="output-controls">
         <div className="output-controls-box">
-          <CommitButton />
           <div className="output-buttons">
             <button
               onClick={handleCopy}

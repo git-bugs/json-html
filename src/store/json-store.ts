@@ -8,17 +8,19 @@ type State = {
   fileName: string;
   isProcessing: boolean;
   lang: Lang;
+  jsonKeys: string[];
   setLang: (lang: Lang) => void;
   setFileName: (name: string) => void;
   setOriginal: (text: string) => void;
+  acceptResult: () => void;
+  resetToOriginal: () => void;
   format: () => void;
   minify: () => void;
   removeKey: (key: string) => void;
   addKey: () => void;
   renameKey: () => void;
   moveKey: () => void;
-  commitProcessedToOriginal: () => void;
-  resetToOriginal: () => void;
+  extractKeys: () => void;
 };
 
 export const buttonIds = {
@@ -37,6 +39,7 @@ export const useJsonStore = create<State>((set, get) => ({
   fileName: '',
   lang: 'en',
   isProcessing: false,
+  jsonKeys: [],
   setLang: (lang: Lang) => set({ lang }),
 
   setFileName: (name) => set({ fileName: name }),
@@ -44,17 +47,38 @@ export const useJsonStore = create<State>((set, get) => ({
   setOriginal: (text) => {
     set({ activeButtonId: '' });
     set({ original: text, result: text });
+    get().extractKeys();
   },
 
-  commitProcessedToOriginal: () => {
+  acceptResult: () => {
     const processed = get().result;
     set({ original: processed });
+    get().extractKeys();
   },
 
   resetToOriginal: () => {
     set({ activeButtonId: '' });
     const original = get().original;
     set({ result: original });
+  },
+
+  extractKeys: () => {
+    try {
+      const parsed = JSON.parse(get().original);
+      const keys = new Set<string>();
+      if (Array.isArray(parsed)) {
+        parsed.forEach((item) => {
+          if (typeof item === 'object' && item !== null) {
+            Object.keys(item).forEach((key) => keys.add(key));
+          }
+        });
+        set({ jsonKeys: Array.from(keys) });
+      } else if (typeof parsed === 'object' && parsed !== null) {
+        Object.keys(parsed).forEach((key) => keys.add(key));
+      } else {
+        set({ jsonKeys: [] });
+      }
+    } catch (e) {}
   },
 
   format: () => {

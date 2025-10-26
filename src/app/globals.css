@@ -11,6 +11,7 @@
   --blue: #1e3a8a;
   --blue-hover: #2e4bb0;
   --grey: #e9e9e9;
+  --light-grey: #f8f9fa;
   --red: #991e2a;
   --red-hover: #c82333;
   --text-grey: #566274;
@@ -56,11 +57,15 @@ label {
   text-transform: uppercase;
   white-space: nowrap;
   font-weight: 700;
-  font-family: var(--font-inter);
+  font-family: var(--font-jet-mono);
   font-size: 14px;
 }
 
 ul,
 ol {
   list-style-type: none;
+}
+
+select {
+  outline: none;
 }

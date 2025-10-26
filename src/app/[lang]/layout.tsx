@@ -12,7 +12,7 @@ const open = Open_Sans({
 
 const mono = JetBrains_Mono({
   variable: '--font-jet-mono',
-  weight: ['400'],
+  weight: ['400', '700'],
   display: 'swap',
 });
 

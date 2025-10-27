@@ -33,7 +33,7 @@ export default function HtmlInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');
-  const { fileName, setFileName, originalText, setOriginal } = useHtmlStore();
+  const { fileName, setFileName, original, setOriginal } = useHtmlStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
@@ -125,7 +125,7 @@ export default function HtmlInput() {
   };
 
   function calculateTextSize(text: string) {
-    const sizeInBytes = new TextEncoder().encode(originalText).length;
+    const sizeInBytes = new TextEncoder().encode(original).length;
     if (sizeInBytes === 0) return '0 B';
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB'];
@@ -160,13 +160,13 @@ export default function HtmlInput() {
           </label>
         </div>
         <div className="input-stats">
-          {originalText != '' && <span className="input-name">{fileName}</span>}
-          <span className="input-size">{calculateTextSize(originalText)}</span>
+          {original != '' && <span className="input-name">{fileName}</span>}
+          <span className="input-size">{calculateTextSize(original)}</span>
         </div>
       </div>
       <textarea
         id="input-textarea"
-        value={originalText}
+        value={original}
         onChange={(e) => setOriginal(e.target.value)}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}

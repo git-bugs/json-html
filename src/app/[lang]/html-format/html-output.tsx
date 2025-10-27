@@ -1,20 +1,18 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './html-output.scss';
-import { buttonIds, useHtmlStore } from '@/store/html-store';
-import CommitButton from './commit-button';
+import { useHtmlStore } from '@/store/html-store';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
 
 const translation = {
   ru: {
-    button_reset: 'Сбросить',
-    button_delete_attr: 'удалить аттрибуты',
-    button_delete_tags: 'удалить теги',
-    button_delete_empty: 'удалить пустые строки',
-    button_format: 'форматирование',
-    button_escaping: 'экранирование',
+    BUTTON_REMOVE_ATTR: 'удалить аттрибуты',
+    BUTTON_REMOVE_TAGS: 'удалить теги',
+    BUTTON_REMOVE_EMPTY: 'удалить пустые строки',
+    BUTTON_FORMAT: 'форматирование',
+    BUTTON_ESCAPING: 'экранирование',
     textarea_placeholder: 'Здесь появится результат обработки...',
     stats_chars: 'символов',
     stats_words: 'слов',
@@ -23,15 +21,14 @@ const translation = {
     copy_button: 'копировать',
     copy_success: 'Скопировано',
     download_button: 'скачать',
-    minify_button: 'минифицировать',
+    BUTTON_MINIFY: 'минифицировать',
   },
   en: {
-    button_reset: 'reset',
-    button_delete_attr: 'remove attributes',
-    button_delete_tags: 'remove tags',
-    button_delete_empty: 'remove empty lines',
-    button_format: 'formatting',
-    button_escaping: 'escaping',
+    BUTTON_REMOVE_ATTR: 'remove attributes',
+    BUTTON_REMOVE_TAGS: 'remove tags',
+    BUTTON_REMOVE_EMPTY: 'remove empty lines',
+    BUTTON_FORMAT: 'formatting',
+    BUTTON_ESCAPING: 'escaping',
     textarea_placeholder: 'The processing result will appear here...',
     stats_chars: 'chars',
     stats_words: 'words',
@@ -40,43 +37,32 @@ const translation = {
     copy_button: 'copy',
     copy_success: 'Success',
     download_button: 'download',
-    minify_button: 'minify',
+    BUTTON_MINIFY: 'minify',
   },
 } as const;
 
 export default function HtmlOutput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copySuccess, setCopySuccess] = useState(false);
-  const {
-    activeButtonId,
-    processedText,
-    fileName,
-    isProcessing,
-    removeAttributes,
-    removeTags,
-    removeEmptyLines,
-    format,
-    resetToOriginal,
-    escaping,
-    minify,
-  } = useHtmlStore();
+  const [option, setOption] = useState<string>('format');
+  const { result, fileName, isProcessing, original, acceptResultToOriginal } =
+    useHtmlStore();
 
   const params = useParams<{ lang: Lang }>();
   const { lang } = params;
   const t = translation[lang];
 
   const handleCopy = async () => {
-    if (!processedText) return;
+    if (!result) return;
     try {
       if (textareaRef.current) {
         // textareaRef.current.select();
-        await navigator.clipboard.writeText(processedText);
+        await navigator.clipboard.writeText(result);
         setCopySuccess(true);
-        // onCopy?.(processedText);
+        // onCopy?.(result);
         setTimeout(() => setCopySuccess(false), 2000);
       }
     } catch (err) {
-      // Fallback для старых браузеров
       textareaRef.current?.select();
       document.execCommand('copy');
       setCopySuccess(true);
@@ -85,15 +71,15 @@ export default function HtmlOutput() {
   };
 
   const handleDownload = () => {
-    if (!processedText) return;
+    if (!result) return;
 
-    const blob = new Blob([processedText], { type: 'text/plain' });
+    const blob = new Blob([result], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `${
       fileName.split('.').slice(0, -1).join('.') +
-      `-${activeButtonId}.` +
+      `-${option}.` +
       fileName.split('.').pop()
     }`;
     document.body.appendChild(a);
@@ -103,124 +89,67 @@ export default function HtmlOutput() {
   };
 
   const stats = {
-    characters: processedText.length,
-    words: processedText.trim() ? processedText.trim().split(/\s+/).length : 0,
-    lines: processedText.split('\n').length,
+    characters: result.length,
+    words: result.trim() ? result.trim().split(/\s+/).length : 0,
+    lines: result.split('\n').length,
   };
+
+  useEffect(() => {
+    const store = useHtmlStore.getState();
+    (store as Record<string, any>)[option]();
+  }, [option, original]);
 
   return (
     <div className="output-container">
-      <div className="output-header">
-        <button
-          className="output-reset"
-          onClick={resetToOriginal}
-          disabled={!processedText || isProcessing}
-        >
-          {t.button_reset}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_4 ? 'active' : ''
-          }`}
-          onClick={format}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_4
-          }
-        >
-          {t.button_format}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_1 ? 'active' : ''
-          }`}
-          onClick={removeAttributes}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_1
-          }
-        >
-          {t.button_delete_attr}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_2 ? 'active' : ''
-          }`}
-          onClick={removeTags}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_2
-          }
-        >
-          {t.button_delete_tags}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_3 ? 'active' : ''
-          }`}
-          onClick={removeEmptyLines}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_3
-          }
-        >
-          {t.button_delete_empty}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_5 ? 'active' : ''
-          }`}
-          onClick={escaping}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_5
-          }
-        >
-          {t.button_escaping}
-        </button>
-        <button
-          className={`output-button ${
-            activeButtonId == buttonIds.BUTTON_6 ? 'active' : ''
-          }`}
-          onClick={minify}
-          disabled={
-            !processedText ||
-            isProcessing ||
-            activeButtonId == buttonIds.BUTTON_6
-          }
-        >
-          {t.minify_button}
-        </button>
-      </div>
+      <div className="html-input-control">
+        <div className="html-control-box">
+          <button
+            className="output-accept"
+            onClick={acceptResultToOriginal}
+            disabled={result.trim() == original.trim()}
+          >
+            <img src="/arrow_left.svg" alt="arrow" />
+          </button>
 
-      <div className="output-controls">
-        <div className="output-controls-box">
-          <CommitButton />
-          <div className="output-buttons">
-            <button
-              onClick={handleCopy}
-              disabled={!processedText || isProcessing}
-              className={`output-button copy-btn ${
-                copySuccess ? 'success' : ''
-              }`}
+          <div className="select-box">
+            <span>option</span>
+            <select
+              name="option"
+              id="options-select"
+              className="options-select output-button"
+              value={option}
+              onChange={(e) => setOption(e.target.value)}
+              disabled={!result || isProcessing}
             >
-              {copySuccess ? `✓ ${t.copy_success}!` : t.copy_button}
-            </button>
-
-            <button
-              onClick={handleDownload}
-              disabled={!processedText || isProcessing}
-              className="output-button download-btn"
-            >
-              {t.download_button}
-            </button>
+              <option value="format">{t.BUTTON_FORMAT}</option>
+              <option value="minify">{t.BUTTON_MINIFY}</option>
+              <option value="removeAttributes">{t.BUTTON_REMOVE_ATTR}</option>
+              <option value="removeTags">{t.BUTTON_REMOVE_TAGS}</option>
+              <option value="removeEmptyLines">{t.BUTTON_REMOVE_EMPTY}</option>
+              <option value="escaping">{t.BUTTON_ESCAPING}</option>
+            </select>
           </div>
         </div>
+        <div className="output-controls">
+          <button
+            onClick={handleCopy}
+            disabled={!result || isProcessing}
+            className={`output-button copy-btn ${copySuccess ? 'success' : ''}`}
+          >
+            {copySuccess ? `✓ ${t.copy_success}!` : t.copy_button}
+          </button>
+
+          <button
+            onClick={handleDownload}
+            disabled={!result || isProcessing}
+            className="output-button download-btn"
+          >
+            {t.download_button}
+          </button>
+        </div>
+      </div>
+
+      <div className="output-box">
         <div className="output-stats">
           <span>
             {stats.characters} {t.stats_chars}
@@ -244,7 +173,7 @@ export default function HtmlOutput() {
         <div className="output-content">
           <textarea
             ref={textareaRef}
-            value={processedText}
+            value={result}
             id="output"
             readOnly
             className="output-textarea"

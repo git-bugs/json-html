@@ -32,7 +32,7 @@ const cards = {
         'Перемещение ключа',
       ],
       link: '/ru/json-format',
-      link_text: 'перейти',
+      link_text: 'перейти в JSON редактор',
     },
     {
       h2: 'HTML',
@@ -47,7 +47,7 @@ const cards = {
         'Минификация',
       ],
       link: '/ru/html-format',
-      link_text: 'перейти',
+      link_text: 'перейти в HTML редактор',
     },
   ],
   en: [
@@ -64,7 +64,7 @@ const cards = {
         'Move key',
       ],
       link: '/en/json-format',
-      link_text: 'open',
+      link_text: 'open the JSON editor',
     },
     {
       h2: 'HTML',
@@ -79,7 +79,7 @@ const cards = {
         'Escaping',
       ],
       link: '/en/html-format',
-      link_text: 'open',
+      link_text: 'open the HTML editor',
     },
   ],
 } as const;

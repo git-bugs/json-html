@@ -2,71 +2,81 @@
 
 import { useState, useRef, useEffect } from 'react';
 import './json-output.scss';
-import { buttonIds, useJsonStore } from '@/store/json-store';
+import { useJsonStore } from '@/store/json-store';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
 
 const translation = {
   ru: {
-    BUTTON_ACCEPT: 'отправить',
+    button_accept: 'принять',
     button_reset: 'Сбросить',
     button_format: 'форматирование',
-    BUTTON_MINIFY: 'минифицировать',
+    button_minify: 'минифицировать',
     button_remove_key: 'удалить ключ',
     button_add_key: 'добавить ключ',
     button_rename_key: 'переименовать ключ',
     button_move_key: 'переместить ключ',
-
+    button_send: 'отправить',
     textarea_placeholder: 'Здесь появится результат обработки...',
     stats_chars: 'символов',
     stats_words: 'слов',
     stats_lines: 'строк',
+    stats_keys: 'ключей',
     processing: 'Обработка...',
     copy_button: 'копировать',
     copy_success: 'Скопировано',
     download_button: 'скачать',
+    option: 'опция',
+    key: 'ключ',
+    new_key: 'новый ключ',
+    new_key_value: 'значение',
+    new_key_string_value: 'значение нового ключа',
   },
   en: {
-    BUTTON_ACCEPT: 'send',
+    button_accept: 'accept',
     button_reset: 'reset',
     button_format: 'formatting',
-    BUTTON_MINIFY: 'minify',
+    button_minify: 'minify',
     button_remove_key: 'remove key',
     button_add_key: 'add key',
     button_rename_key: 'rename key',
     button_move_key: 'move key',
-
+    button_send: 'send',
     textarea_placeholder: 'The processing result will appear here...',
     stats_chars: 'chars',
     stats_words: 'words',
     stats_lines: 'lines',
+    stats_keys: 'keys',
     processing: 'Processing ...',
     copy_button: 'copy',
     copy_success: 'Success',
     download_button: 'download',
+    option: 'option',
+    key: 'key',
+    new_key: 'new key',
+    new_key_value: 'value',
+    new_key_string_value: 'new key value',
   },
 } as const;
 
 export default function JsonOutput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [selectedKey, setSelectedKey] = useState('');
-  const [selectedOption, setSelectedOption] = useState('');
-  const [keyInput, setKeyInput] = useState('');
+  const [selectedOption, setSelectedOption] = useState('format');
+  const [key, setKey] = useState('');
+  const [newKey, setNewKey] = useState('');
+  const [newKeyValue, setNewKeyValue] = useState('null');
+  const [len, setLen] = useState(0);
+  const [newKeyStringValue, setNewKeyStringValue] = useState('');
+
   const {
-    activeButtonId,
     original,
     result,
     fileName,
     isProcessing,
     jsonKeys,
-    addKey,
-    renameKey,
-    moveKey,
-    removeKey,
-    format,
-    resetToOriginal,
-    minify,
+    validJson,
+    setRusultEmpty,
     acceptResult,
   } = useJsonStore();
   const params = useParams<{ lang: Lang }>();
@@ -101,7 +111,7 @@ export default function JsonOutput() {
     a.href = url;
     a.download = `${
       fileName.split('.').slice(0, -1).join('.') +
-      `-${activeButtonId}.` +
+      `-${selectedOption}.` +
       fileName.split('.').pop()
     }`;
     document.body.appendChild(a);
@@ -114,128 +124,172 @@ export default function JsonOutput() {
     characters: result.length,
     words: result.trim() ? result.trim().split(/\s+/).length : 0,
     lines: result.split('\n').length,
+    keys: jsonKeys.length,
   };
 
   useEffect(() => {
-    if (jsonKeys.length > 0) {
-      setSelectedKey(jsonKeys[0]);
+    const store = useJsonStore.getState();
+    if (
+      (original && selectedOption === 'format') ||
+      selectedOption === 'minify'
+    ) {
+      (store as Record<string, any>)[selectedOption]();
     }
-  }, [jsonKeys]);
+    if (original && selectedOption === 'removeKey') {
+      (store as Record<string, any>)[selectedOption](key);
+    }
+    if (original && selectedOption === 'addKey' && newKey) {
+      (store as Record<string, any>)[selectedOption](
+        newKey,
+        newKeyValue,
+        newKeyStringValue
+      );
+    }
+  }, [selectedOption, key, len, newKey, newKeyValue, newKeyStringValue]);
 
   useEffect(() => {
-    setSelectedOption('removeKey');
-  }, []);
+    if (jsonKeys.length > 0) {
+      setKey(jsonKeys[0]);
+    }
+    setLen(original.length);
+    if (!original) setRusultEmpty();
+  }, [original]);
 
   return (
     <div className="output-container">
       <div className="output-box">
-        {result.trim() !== original.trim() && (
-          <button className="output-accept" onClick={acceptResult}>
-            <img src="/arrow_left.svg" alt="" />
-            <p>{t.BUTTON_ACCEPT}</p>
-          </button>
-        )}
-        <button
-          className="output-reset"
-          onClick={resetToOriginal}
-          disabled={!result || isProcessing}
-        >
-          {t.button_reset}
-        </button>
-      </div>
-
-      <div className="output-box">
-        <div className="select-box">
-          <span className="select-box-title">Опция</span>
-          <select
-            name="operations-select"
-            id="operations-select"
-            className="output-button"
-            value={selectedOption}
-            onChange={(e) => setSelectedOption(e.target.value)}
+        <form id="json-options">
+          <button
+            className="output-accept"
+            onClick={acceptResult}
+            disabled={
+              result.trim() === original.trim() || !result || !validJson
+            }
           >
-            <option value="format">{t.button_format}</option>
-            <option value="minify">{t.BUTTON_MINIFY}</option>
-            <option value="removeKey">{t.button_remove_key}</option>
-            <option value="addKey">{t.button_add_key}</option>
-            <option value="renameKey">{t.button_rename_key}</option>
-            {/* <option value="moveKey">{t.button_move_key}</option> */}
-          </select>
-        </div>
+            <img src="/arrow_left.svg" alt="" />
+          </button>
 
-        {jsonKeys.length > 0 &&
-          selectedOption !== 'format' &&
-          selectedOption !== 'minify' &&
-          selectedOption !== 'addKey' && (
+          <div className="select-box">
+            <span className="select-box-title">{t.option}</span>
+            <select
+              name="option"
+              id="option-select"
+              className="output-button"
+              value={selectedOption}
+              onChange={(e) => setSelectedOption(e.target.value)}
+              disabled={!result || !validJson}
+            >
+              <option value="format">{t.button_format}</option>
+              <option value="minify">{t.button_minify}</option>
+              <option value="removeKey">{t.button_remove_key}</option>
+              <option value="addKey">{t.button_add_key}</option>
+              <option value="renameKey">{t.button_rename_key}</option>
+            </select>
+          </div>
+          {jsonKeys.length > 0 &&
+            selectedOption !== 'format' &&
+            selectedOption !== 'minify' &&
+            selectedOption !== 'addKey' && (
+              <div className="select-box">
+                <span>{t.key}</span>
+                <select
+                  id="keys-select"
+                  className="output-button"
+                  name="key"
+                  onChange={(e) => setKey(e.target.value)}
+                  value={key}
+                  disabled={!result || !validJson}
+                >
+                  {jsonKeys.map((key) => (
+                    <option key={key} value={key}>
+                      {key}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          {(selectedOption === 'addKey' || selectedOption === 'renameKey') && (
             <div className="select-box">
-              <span>Ключ</span>
+              <span>{t.new_key}</span>
+              <input
+                name="new-value"
+                type="text"
+                className="key-input"
+                value={newKey}
+                onChange={(e) => setNewKey(e.target.value)}
+                disabled={!result || !validJson}
+                placeholder="..."
+                autoComplete="off"
+              />
+            </div>
+          )}
+          {selectedOption === 'addKey' && (
+            <div className="select-box">
+              <span className="select-box-title">{t.new_key_value}</span>
               <select
-                id="keys-select"
+                name="new-key-value"
+                id="new-key-value"
                 className="output-button"
-                name="keys-select"
-                onChange={(e) => setSelectedKey(e.target.value)}
-                value={selectedKey}
+                value={newKeyValue}
+                onChange={(e) => setNewKeyValue(e.target.value)}
+                disabled={!result || !validJson}
               >
-                {jsonKeys.map((key) => (
-                  <option key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
+                <option value="null">null</option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+                <option value="string">String</option>
               </select>
             </div>
           )}
-
-        {(selectedOption === 'addKey' || selectedOption === 'renameKey') && (
-          <div className="select-box">
-            <span>Новое значение</span>
-            <input
-              type="text"
-              className="key-input"
-              onChange={(e) => setKeyInput(e.target.value)}
-            />
-          </div>
-        )}
-
-        {jsonKeys.length > 0 &&
-          selectedOption !== 'format' &&
-          selectedOption !== 'minify' && (
-            <button className="output-button">ПРинять</button>
+          {selectedOption === 'addKey' && newKeyValue === 'string' && (
+            <div className="select-box">
+              <span>{t.new_key_string_value}</span>
+              <input
+                name="newkey-value"
+                type="text"
+                className="key-input"
+                value={newKeyStringValue}
+                onChange={(e) => setNewKeyStringValue(e.target.value)}
+                disabled={!result || !validJson}
+                placeholder="..."
+                autoComplete="off"
+              />
+            </div>
           )}
+        </form>
+
+        <div className="output-buttons">
+          <button
+            onClick={handleCopy}
+            disabled={!result || isProcessing || !validJson}
+            className={`output-button copy-btn ${copySuccess ? 'success' : ''}`}
+          >
+            {copySuccess ? `✓ ${t.copy_success}!` : t.copy_button}
+          </button>
+
+          <button
+            onClick={handleDownload}
+            disabled={!result || isProcessing || !validJson}
+            className="output-button download-btn"
+          >
+            {t.download_button}
+          </button>
+        </div>
       </div>
 
-      <div className="output-controls">
-        <div className="output-controls-box">
-          <div className="output-buttons">
-            <button
-              onClick={handleCopy}
-              disabled={!result || isProcessing}
-              className={`output-button copy-btn ${
-                copySuccess ? 'success' : ''
-              }`}
-            >
-              {copySuccess ? `✓ ${t.copy_success}!` : t.copy_button}
-            </button>
-
-            <button
-              onClick={handleDownload}
-              disabled={!result || isProcessing}
-              className="output-button download-btn"
-            >
-              {t.download_button}
-            </button>
-          </div>
-        </div>
-        <div className="output-stats">
-          <span>
-            {stats.characters} {t.stats_chars}
-          </span>
-          <span>
-            {stats.words} {t.stats_words}
-          </span>
-          <span>
-            {stats.lines} {t.stats_lines}
-          </span>
-        </div>
+      <div className="output-stats">
+        <span>
+          {stats.characters} {t.stats_chars}
+        </span>
+        <span>
+          {stats.words} {t.stats_words}
+        </span>
+        <span>
+          {stats.lines} {t.stats_lines}
+        </span>
+        <span>
+          {stats.keys} {t.stats_keys}
+        </span>
       </div>
 
       {isProcessing && (

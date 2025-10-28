@@ -77,12 +77,6 @@ export async function generateMetadata({
         en: `${baseUrl}/en`,
       },
     },
-    icons: {
-      icon: {
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
-      },
-    },
   };
 }
 
@@ -99,6 +93,8 @@ export default async function RootLayout({
   return (
     <html lang={lang === 'ru' ? 'ru-RU' : 'en-EN'}>
       <head>
+        <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

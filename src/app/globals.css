@@ -59,6 +59,7 @@ label {
   font-weight: 700;
   font-family: var(--font-jet-mono);
   font-size: 14px;
+  border: none;
 }
 
 ul,

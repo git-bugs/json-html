@@ -4,7 +4,6 @@ import { create } from 'zustand';
 type State = {
   original: string;
   result: string;
-  activeButtonId: string;
   fileName: string;
   isProcessing: boolean;
   lang: Lang;
@@ -17,37 +16,42 @@ type State = {
   format: () => void;
   minify: () => void;
   removeKey: (key: string) => void;
-  addKey: () => void;
+  addKey: (
+    newKey: string,
+    newKeyValue: string,
+    newKeyStringValue: string
+  ) => void;
   renameKey: () => void;
-  moveKey: () => void;
   extractKeys: () => void;
-};
-
-export const buttonIds = {
-  BUTTON_1: 'format',
-  BUTTON_2: 'minify',
-  BUTTON_3: 'remove',
-  BUTTON_4: 'add',
-  BUTTON_5: 'rename',
-  BUTTON_6: 'move',
+  setRusultEmpty: () => void;
+  validJson: boolean;
 };
 
 export const useJsonStore = create<State>((set, get) => ({
   original: '',
   result: '',
-  activeButtonId: '',
   fileName: '',
   lang: 'en',
   isProcessing: false,
   jsonKeys: [],
+  validJson: true,
   setLang: (lang: Lang) => set({ lang }),
 
   setFileName: (name) => set({ fileName: name }),
 
   setOriginal: (text) => {
-    set({ activeButtonId: '' });
-    set({ original: text, result: text });
-    get().extractKeys();
+    try {
+      set({ original: text });
+      get().extractKeys();
+      JSON.parse(get().original);
+      set({ validJson: true });
+    } catch (error) {
+      set({ validJson: false });
+    }
+  },
+
+  setRusultEmpty: () => {
+    set({ result: '' });
   },
 
   acceptResult: () => {
@@ -57,7 +61,6 @@ export const useJsonStore = create<State>((set, get) => ({
   },
 
   resetToOriginal: () => {
-    set({ activeButtonId: '' });
     const original = get().original;
     set({ result: original });
   },
@@ -75,6 +78,7 @@ export const useJsonStore = create<State>((set, get) => ({
         set({ jsonKeys: Array.from(keys) });
       } else if (typeof parsed === 'object' && parsed !== null) {
         Object.keys(parsed).forEach((key) => keys.add(key));
+        set({ jsonKeys: Array.from(keys) });
       } else {
         set({ jsonKeys: [] });
       }
@@ -82,7 +86,7 @@ export const useJsonStore = create<State>((set, get) => ({
   },
 
   format: () => {
-    set({ activeButtonId: buttonIds.BUTTON_1, isProcessing: true });
+    set({ isProcessing: true });
     try {
       const parsed = JSON.parse(get().original);
       const pretty = JSON.stringify(parsed, null, 2);
@@ -91,13 +95,12 @@ export const useJsonStore = create<State>((set, get) => ({
       set({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
-        activeButtonId: '',
       });
     }
   },
 
   minify: () => {
-    set({ activeButtonId: buttonIds.BUTTON_2, isProcessing: true });
+    set({ isProcessing: true });
     try {
       const parsed = JSON.parse(get().original);
       let minifyed;
@@ -109,7 +112,7 @@ export const useJsonStore = create<State>((set, get) => ({
         set({ result: minifyed, isProcessing: false });
       } else {
         set({
-          result: 'JSON должен быть объектом или массивом',
+          result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
           isProcessing: false,
         });
       }
@@ -117,13 +120,12 @@ export const useJsonStore = create<State>((set, get) => ({
       set({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
-        activeButtonId: '',
       });
     }
   },
 
   removeKey: (key) => {
-    set({ activeButtonId: buttonIds.BUTTON_3, isProcessing: true });
+    set({ isProcessing: true });
     try {
       const parsed = JSON.parse(get().original);
       let removed;
@@ -146,29 +148,42 @@ export const useJsonStore = create<State>((set, get) => ({
       set({ result: JSON.stringify(removed), isProcessing: false });
     } catch (error) {
       set({
-        result: 'Invalid JSON',
+        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
-        activeButtonId: '',
       });
     }
   },
 
-  addKey: () => {
-    set({ activeButtonId: buttonIds.BUTTON_4, isProcessing: true });
-    const raw = get().original;
+  addKey: (newKey, newKeyValue, newKeyStringValue) => {
+    try {
+      set({ isProcessing: true });
+      const parsed = JSON.parse(get().original);
+      let value: any;
+      if (newKeyValue === 'null') value = null;
+      if (newKeyValue === 'true' || newKeyValue === 'false')
+        value = newKeyValue.trim().toLowerCase() === 'true';
+      if (newKeyValue === 'string') value = newKeyStringValue;
+      let updated;
+      if (Array.isArray(parsed)) {
+        updated = parsed.map((obj: any) => ({
+          ...obj,
+          [newKey]: value,
+        }));
+      } else if (typeof parsed === 'object' && parsed !== null) {
+        updated = { ...parsed, [newKey]: value };
+      }
 
-    set({ result: '', isProcessing: false });
+      set({ result: JSON.stringify(updated), isProcessing: false });
+    } catch (error) {
+      set({
+        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        isProcessing: false,
+      });
+    }
   },
 
   renameKey: () => {
-    set({ activeButtonId: buttonIds.BUTTON_5, isProcessing: true });
-    const raw = get().original;
-
-    set({ result: '', isProcessing: false });
-  },
-
-  moveKey: () => {
-    set({ activeButtonId: buttonIds.BUTTON_6, isProcessing: true });
+    set({ isProcessing: true });
     const raw = get().original;
 
     set({ result: '', isProcessing: false });

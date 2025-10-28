@@ -22,6 +22,7 @@ const translation = {
     copy_success: 'Скопировано',
     download_button: 'скачать',
     BUTTON_MINIFY: 'минифицировать',
+    BUTTON_OPTION: 'опция',
   },
   en: {
     BUTTON_REMOVE_ATTR: 'remove attributes',
@@ -38,6 +39,7 @@ const translation = {
     copy_success: 'Success',
     download_button: 'download',
     BUTTON_MINIFY: 'minify',
+    BUTTON_OPTION: 'option',
   },
 } as const;
 
@@ -112,7 +114,7 @@ export default function HtmlOutput() {
           </button>
 
           <div className="select-box">
-            <span>option</span>
+            <span>{t.BUTTON_OPTION}</span>
             <select
               name="option"
               id="options-select"

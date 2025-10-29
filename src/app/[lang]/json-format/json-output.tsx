@@ -145,6 +145,9 @@ export default function JsonOutput() {
         newKeyStringValue
       );
     }
+    if (original && selectedOption === 'renameKey' && newKey) {
+      (store as Record<string, any>)[selectedOption](key, newKey);
+    }
   }, [selectedOption, key, len, newKey, newKeyValue, newKeyStringValue]);
 
   useEffect(() => {
@@ -157,7 +160,7 @@ export default function JsonOutput() {
 
   return (
     <div className="output-container">
-      <div className="output-box">
+      <div className="output-box output-head">
         <form id="json-options">
           <button
             className="output-accept"
@@ -212,9 +215,10 @@ export default function JsonOutput() {
             <div className="select-box">
               <span>{t.new_key}</span>
               <input
+                id="new-key"
                 name="new-value"
                 type="text"
-                className="key-input"
+                className="output-button"
                 value={newKey}
                 onChange={(e) => setNewKey(e.target.value)}
                 disabled={!result || !validJson}
@@ -245,9 +249,10 @@ export default function JsonOutput() {
             <div className="select-box">
               <span>{t.new_key_string_value}</span>
               <input
-                name="newkey-value"
+                name="newkey-string-value"
                 type="text"
-                className="key-input"
+                id="newkey-string-value"
+                className="output-button"
                 value={newKeyStringValue}
                 onChange={(e) => setNewKeyStringValue(e.target.value)}
                 disabled={!result || !validJson}

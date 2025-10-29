@@ -165,7 +165,7 @@ export default async function Page({
         <div className="container">
           <div className="footer-inner">
             <img src="/mail.svg" alt="mail" />
-            <div className="footer-mail">json-html@gmail.com</div>
+            <div className="footer-mail">tutejsy.bot@gmail.com</div>
           </div>
         </div>
       </footer>

@@ -1,46 +1,10 @@
-@media (max-width: 1599px) {
-  .input-name {
-    display: none;
-  }
-}
-
-@media (max-width: 840px) {
-  .json-format-container {
-    min-height: 100vh;
-  }
-  .json-format {
-    display: block;
-  }
-  .input-container,
-  .output-container {
-    width: 100%;
-  }
-  .input-container {
-    min-height: 300px;
-    flex: 0;
-  }
-  .input-textarea {
-    border: 1px solid var(--grey-lines);
-    overflow: hidden;
-  }
-  .output-header {
-    gap: 8px;
-  }
-
-  .output-commit {
-    img {
-      transform: rotate(90deg);
+.json-format {
+  @media (max-width: 2300px) {
+    .output-head {
+      flex-direction: column;
     }
-  }
-  .output-content {
-    display: flex;
-  }
-  .output-textarea {
-    border: 1px solid var(--grey-lines);
-    min-height: 400px;
-    overflow: hidden;
-  }
-  button {
-    font-size: 12px;
+    .output-button{
+      height: auto ;
+    }
   }
 }

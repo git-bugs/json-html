@@ -21,7 +21,7 @@ type State = {
     newKeyValue: string,
     newKeyStringValue: string
   ) => void;
-  renameKey: () => void;
+  renameKey: (key: string, newKey: string) => void;
   extractKeys: () => void;
   setRusultEmpty: () => void;
   validJson: boolean;
@@ -103,13 +103,11 @@ export const useJsonStore = create<State>((set, get) => ({
     set({ isProcessing: true });
     try {
       const parsed = JSON.parse(get().original);
-      let minifyed;
       if (
         Array.isArray(parsed) ||
         (typeof parsed === 'object' && parsed !== null)
       ) {
-        minifyed = JSON.stringify(parsed);
-        set({ result: minifyed, isProcessing: false });
+        set({ result: JSON.stringify(parsed), isProcessing: false });
       } else {
         set({
           result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
@@ -182,10 +180,26 @@ export const useJsonStore = create<State>((set, get) => ({
     }
   },
 
-  renameKey: () => {
-    set({ isProcessing: true });
-    const raw = get().original;
-
-    set({ result: '', isProcessing: false });
+  renameKey: (key, newKey) => {
+    try {
+      set({ isProcessing: true });
+      const parsed = JSON.parse(get().original);
+      let updated;
+      if (Array.isArray(parsed)) {
+        updated = parsed.map(({ [key]: value, ...rest }) => ({
+          [newKey]: value,
+          ...rest,
+        }));
+      } else if (typeof parsed === 'object' && parsed !== null) {
+        const { [key]: value, ...rest } = parsed;
+        updated = { [newKey]: value, ...rest };
+      }
+      set({ result: JSON.stringify(updated), isProcessing: false });
+    } catch (error) {
+      set({
+        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        isProcessing: false,
+      });
+    }
   },
 }));

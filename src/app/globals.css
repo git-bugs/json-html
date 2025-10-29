@@ -67,6 +67,7 @@ ol {
   list-style-type: none;
 }
 
-select {
+select,
+input {
   outline: none;
 }

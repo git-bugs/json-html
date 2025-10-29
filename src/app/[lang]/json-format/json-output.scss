@@ -59,6 +59,7 @@
     }
     &:disabled {
       cursor: default;
+      opacity: 0.5;
     }
     &:hover:not(:disabled) {
       background: #f3f4f6;
@@ -129,13 +130,21 @@
 
   #keys-select,
   #option-select,
-  #new-key-value {
+  #new-key-value,
+  #new-key,
+  #newkey-string-value {
     font-weight: 700;
     font-family: var(--font-jet-mono);
   }
   #option-select,
   #new-key-value {
     text-transform: uppercase;
+  }
+
+  #new-key,
+  #newkey-string-value {
+    cursor: initial;
+    text-transform: initial;
   }
 
   .select-box {

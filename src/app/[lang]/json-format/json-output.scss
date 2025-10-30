@@ -33,6 +33,7 @@
     color: #fff;
     cursor: pointer;
     position: relative;
+    height: 67px;
     &:hover:not(:disabled) {
       background: var(--blue-hover);
     }
@@ -145,6 +146,9 @@
   #newkey-string-value {
     cursor: initial;
     text-transform: initial;
+    &::placeholder {
+      font-style: italic;
+    }
   }
 
   .select-box {
@@ -156,6 +160,7 @@
     padding: 4px 6px;
     border-radius: 4px;
     span {
+      margin-left: 4px;
       border-radius: 4px;
       cursor: default;
       font-size: 14px;

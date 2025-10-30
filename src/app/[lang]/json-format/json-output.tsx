@@ -30,7 +30,9 @@ const translation = {
     key: 'ключ',
     new_key: 'новый ключ',
     new_key_value: 'значение',
+    new_key_value_placeholder: 'Новый ключ...',
     new_key_string_value: 'значение нового ключа',
+    new_key_string_value_placeholder: 'Новое значение...',
   },
   en: {
     button_accept: 'accept',
@@ -55,7 +57,9 @@ const translation = {
     key: 'key',
     new_key: 'new key',
     new_key_value: 'value',
+    new_key_value_placeholder: 'New key...',
     new_key_string_value: 'new key value',
+    new_key_string_value_placeholder: 'New value...',
   },
 } as const;
 
@@ -161,107 +165,122 @@ export default function JsonOutput() {
   return (
     <div className="output-container">
       <div className="output-box output-head">
-        <form id="json-options">
-          <button
-            className="output-accept"
-            onClick={acceptResult}
-            disabled={
-              result.trim() === original.trim() || !result || !validJson
-            }
-          >
-            <img src="/arrow_left.svg" alt="" />
-          </button>
+        <button
+          className="output-accept"
+          onClick={acceptResult}
+          disabled={result.trim() === original.trim() || !result || !validJson}
+          aria-label="to-original"
+        >
+          <img src="/images/arrow_left.svg" alt="" />
+        </button>
 
-          <div className="select-box">
-            <span className="select-box-title">{t.option}</span>
-            <select
-              name="option"
-              id="option-select"
-              className="output-button"
-              value={selectedOption}
-              onChange={(e) => setSelectedOption(e.target.value)}
-              disabled={!result || !validJson}
-            >
-              <option value="format">{t.button_format}</option>
-              <option value="minify">{t.button_minify}</option>
-              <option value="removeKey">{t.button_remove_key}</option>
-              <option value="addKey">{t.button_add_key}</option>
-              <option value="renameKey">{t.button_rename_key}</option>
-            </select>
-          </div>
-          {jsonKeys.length > 0 &&
-            selectedOption !== 'format' &&
-            selectedOption !== 'minify' &&
-            selectedOption !== 'addKey' && (
-              <div className="select-box">
-                <span>{t.key}</span>
-                <select
-                  id="keys-select"
-                  className="output-button"
-                  name="key"
-                  onChange={(e) => setKey(e.target.value)}
-                  value={key}
-                  disabled={!result || !validJson}
-                >
-                  {jsonKeys.map((key) => (
-                    <option key={key} value={key}>
-                      {key}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-          {(selectedOption === 'addKey' || selectedOption === 'renameKey') && (
+        <div className="select-box">
+          <span className="select-box-title">{t.option}</span>
+          <select
+            name="option"
+            id="option-select"
+            className="output-button"
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+            disabled={!result || !validJson}
+            aria-label="select-option"
+          >
+            <option value="format">{t.button_format}</option>
+            <option value="minify">{t.button_minify}</option>
+            <option value="removeKey">{t.button_remove_key}</option>
+            <option value="addKey">{t.button_add_key}</option>
+            <option value="renameKey">{t.button_rename_key}</option>
+          </select>
+        </div>
+        {jsonKeys.length > 0 &&
+          selectedOption !== 'format' &&
+          selectedOption !== 'minify' &&
+          selectedOption !== 'addKey' && (
             <div className="select-box">
-              <span>{t.new_key}</span>
-              <input
-                id="new-key"
-                name="new-value"
-                type="text"
-                className="output-button"
-                value={newKey}
-                onChange={(e) => setNewKey(e.target.value)}
-                disabled={!result || !validJson}
-                placeholder="..."
-                autoComplete="off"
-              />
-            </div>
-          )}
-          {selectedOption === 'addKey' && (
-            <div className="select-box">
-              <span className="select-box-title">{t.new_key_value}</span>
+              <span>{t.key}</span>
               <select
-                name="new-key-value"
-                id="new-key-value"
+                id="keys-select"
                 className="output-button"
-                value={newKeyValue}
-                onChange={(e) => setNewKeyValue(e.target.value)}
+                name="key"
+                onChange={(e) => setKey(e.target.value)}
+                value={key}
                 disabled={!result || !validJson}
+                aria-label="ket-selecot"
               >
-                <option value="null">null</option>
-                <option value="true">True</option>
-                <option value="false">False</option>
-                <option value="string">String</option>
+                {jsonKeys.map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
               </select>
             </div>
           )}
-          {selectedOption === 'addKey' && newKeyValue === 'string' && (
-            <div className="select-box">
-              <span>{t.new_key_string_value}</span>
-              <input
-                name="newkey-string-value"
-                type="text"
-                id="newkey-string-value"
-                className="output-button"
-                value={newKeyStringValue}
-                onChange={(e) => setNewKeyStringValue(e.target.value)}
-                disabled={!result || !validJson}
-                placeholder="..."
-                autoComplete="off"
-              />
-            </div>
-          )}
-        </form>
+        {(selectedOption === 'addKey' || selectedOption === 'renameKey') && (
+          <div className="select-box">
+            <span>{t.new_key}</span>
+            <input
+              id="new-key"
+              name="new-value"
+              type="text"
+              className="output-button"
+              value={newKey}
+              onChange={(e) => setNewKey(e.target.value)}
+              disabled={!result || !validJson}
+              placeholder={t.new_key_value_placeholder}
+              autoComplete="off"
+            />
+          </div>
+        )}
+        {selectedOption === 'addKey' && (
+          <div className="select-box">
+            <span className="select-box-title">{t.new_key_value}</span>
+            <select
+              name="new-key-value"
+              id="new-key-value"
+              className="output-button"
+              value={newKeyValue}
+              onChange={(e) => setNewKeyValue(e.target.value)}
+              disabled={!result || !validJson}
+              aria-label="key-type"
+            >
+              <option value="null">null</option>
+              <option value="true">True</option>
+              <option value="false">False</option>
+              <option value="string">String</option>
+            </select>
+          </div>
+        )}
+        {selectedOption === 'addKey' && newKeyValue === 'string' && (
+          <div className="select-box">
+            <span>{t.new_key_string_value}</span>
+            <input
+              name="newkey-string-value"
+              type="text"
+              id="newkey-string-value"
+              className="output-button"
+              value={newKeyStringValue}
+              onChange={(e) => setNewKeyStringValue(e.target.value)}
+              disabled={!result || !validJson}
+              placeholder={t.new_key_string_value_placeholder}
+              autoComplete="off"
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="output-stats">
+        <span>
+          {stats.characters} {t.stats_chars}
+        </span>
+        <span>
+          {stats.words} {t.stats_words}
+        </span>
+        <span>
+          {stats.lines} {t.stats_lines}
+        </span>
+        <span>
+          {stats.keys} {t.stats_keys}
+        </span>
 
         <div className="output-buttons">
           <button
@@ -280,21 +299,6 @@ export default function JsonOutput() {
             {t.download_button}
           </button>
         </div>
-      </div>
-
-      <div className="output-stats">
-        <span>
-          {stats.characters} {t.stats_chars}
-        </span>
-        <span>
-          {stats.words} {t.stats_words}
-        </span>
-        <span>
-          {stats.lines} {t.stats_lines}
-        </span>
-        <span>
-          {stats.keys} {t.stats_keys}
-        </span>
       </div>
 
       {isProcessing && (

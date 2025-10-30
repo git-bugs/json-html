@@ -1,26 +1,5 @@
 import type { Metadata } from 'next';
-import { JetBrains_Mono, Inter, Open_Sans } from 'next/font/google';
-import '../globals.css';
 import { Lang } from '../../types/lang';
-
-const open = Open_Sans({
-  variable: '--font-open',
-  display: 'swap',
-  weight: ['400', '700'],
-  subsets: ['latin', 'cyrillic'],
-});
-
-const mono = JetBrains_Mono({
-  variable: '--font-jet-mono',
-  weight: ['400', '700'],
-  display: 'swap',
-});
-
-const inter = Inter({
-  variable: '--font-inter',
-  weight: ['400', '700'],
-  display: 'swap',
-});
 
 const translations = {
   ru: {
@@ -77,6 +56,12 @@ export async function generateMetadata({
         en: `${baseUrl}/en`,
       },
     },
+    icons: {
+      icon: {
+        url: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+    },
   };
 }
 
@@ -90,69 +75,64 @@ export default async function RootLayout({
   const { lang } = await params;
   const t = translations[lang] || translations.en;
   const baseUrl = process.env.BASE_URL;
+
   return (
-    <html lang={lang === 'ru' ? 'ru-RU' : 'en-EN'}>
-      <head>
-        <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@graph': [
-                {
-                  '@type': 'Organization',
-                  name: 'JSON HTML format',
-                  url: `${baseUrl}/${lang}`,
-                  logo: `${baseUrl}/logo.svg`,
-                  sameAs: [],
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'Organization',
+                name: 'JSON HTML format',
+                url: `${baseUrl}/${lang}`,
+                logo: `${baseUrl}/logo.svg`,
+                sameAs: [],
+              },
+              {
+                '@type': 'WebSite',
+                name: t.schema_name,
+                url: `${baseUrl}/${lang}`,
+                inLanguage: lang,
+              },
+              {
+                '@type': 'WebPage',
+                name: 'Home',
+                url: `${baseUrl}/${lang}`,
+                description: t.schema_description,
+                inLanguage: lang,
+                mainEntity: {
+                  '@type': 'ItemList',
+                  name: 'Available Services',
+                  itemListElement: [
+                    {
+                      '@type': 'ListItem',
+                      position: 1,
+                      url: `${baseUrl}/${lang}/html-format`,
+                      name:
+                        lang == 'en'
+                          ? 'HTML formatting'
+                          : 'HTML форматирование',
+                    },
+                    {
+                      '@type': 'ListItem',
+                      position: 2,
+                      url: `${baseUrl}/${lang}/json-format`,
+                      name:
+                        lang == 'en'
+                          ? 'JSON formatting'
+                          : 'JSON форматирование',
+                    },
+                  ],
                 },
-                {
-                  '@type': 'WebSite',
-                  name: t.schema_name,
-                  url: `${baseUrl}/${lang}`,
-                  inLanguage: lang,
-                },
-                {
-                  '@type': 'WebPage',
-                  name: 'Home',
-                  url: `${baseUrl}/${lang}`,
-                  description: t.schema_description,
-                  inLanguage: lang,
-                  mainEntity: {
-                    '@type': 'ItemList',
-                    name: 'Available Services',
-                    itemListElement: [
-                      {
-                        '@type': 'ListItem',
-                        position: 1,
-                        url: `${baseUrl}/${lang}/html-format`,
-                        name:
-                          lang == 'en'
-                            ? 'HTML formatting'
-                            : 'HTML форматирование',
-                      },
-                      {
-                        '@type': 'ListItem',
-                        position: 2,
-                        url: `${baseUrl}/${lang}/json-format`,
-                        name:
-                          lang == 'en'
-                            ? 'JSON formatting'
-                            : 'JSON форматирование',
-                      },
-                    ],
-                  },
-                },
-              ],
-            }),
-          }}
-        />
-      </head>
-      <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
-        {children}
-      </body>
-    </html>
+              },
+            ],
+          }),
+        }}
+      />
+      {children}
+    </>
   );
 }

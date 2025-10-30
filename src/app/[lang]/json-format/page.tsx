@@ -7,13 +7,14 @@ import './format-json.scss';
 import './json-media.scss';
 
 import Header from '@/components/header';
+import Script from 'next/script';
 
 const translations = {
   ru: {
     meta_title:
-      'JSON: форматирование, минификация, удаление ключей, добавление ключей, переименование и перемещение ключей',
+      'JSON: форматирование, минификация, удаление ключей, добавление и переименование ключей',
     meta_description:
-      'Онлайн инструменты и методы редактирования JSON: форматирование, минификация, редактирование и минификация',
+      'Онлайн инструменты и методы обработки JSON: форматирование, минификация, редактирование ключей.',
     header_title: 'JSON форматирование',
     schema_name: 'JSON форматирование',
     schema_description:
@@ -21,13 +22,13 @@ const translations = {
   },
   en: {
     meta_title:
-      'HTML: formatting, escaping, minification, normalization and text editing',
+      'JSON: formatting, minification, deleting keys, adding and renaming keys',
     meta_description:
-      'HTML parsing tools and techniques: formatting, escaping, normalization, editing and minify',
+      'Online tools and methods for processing JSON: formatting, minification, editing keys.',
     header_title: 'JSON formatting',
-    schema_name: 'HTML форматирование',
+    schema_name: 'JSON formatting',
     schema_description:
-      'Онлайн-инструмент для форматирования и очистки HTML-кода. Работает мгновенно в браузере и гарантирует полную конфиденциальность данных.',
+      'Online tool for formatting and editing JSON code. Works instantly in the browser and guarantees complete data confidentiality.',
   },
 } as const;
 
@@ -39,7 +40,6 @@ export async function generateMetadata({
   const { lang } = await params;
   const t = translations[lang] || translations.en;
   const baseUrl = process.env.BASE_URL;
-  const path = 'text-processor';
   return {
     title: t.meta_title,
     description: t.meta_description,
@@ -60,7 +60,7 @@ export async function generateMetadata({
       type: 'website',
     },
     alternates: {
-      canonical: `${baseUrl}/${lang}/`,
+      canonical: `${baseUrl}/${lang}/json-format`,
       languages: {
         ru: `${baseUrl}/${lang}/json-format`,
         en: `${baseUrl}/${lang}/json-format`,
@@ -69,7 +69,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function JsonProcessor({
+export default async function JsonFormat({
   params,
 }: {
   params: Promise<{ lang: Lang }>;
@@ -77,6 +77,7 @@ export default async function JsonProcessor({
   const { lang } = await params;
   const baseUrl = process.env.BASE_URL;
   const t = translations[lang] || translations.en;
+  const htmlLnag = lang === 'ru' ? 'ru-RU' : 'en-EN';
   return (
     <>
       <script
@@ -88,7 +89,7 @@ export default async function JsonProcessor({
             name: t.schema_name,
             applicationCategory: 'WebApplication',
             operatingSystem: 'All',
-            url: `${baseUrl}/${lang}/html-format`,
+            url: `${baseUrl}/${lang}/json-format`,
             description: t.schema_description,
             inLanguage: lang,
             offers: {

@@ -37,7 +37,6 @@ export async function generateMetadata({
   const { lang } = await params;
   const t = translations[lang] || translations.en;
   const baseUrl = process.env.BASE_URL;
-
   return {
     title: t.meta_title,
     description: t.meta_description,
@@ -58,7 +57,7 @@ export async function generateMetadata({
       type: 'website',
     },
     alternates: {
-      canonical: `${baseUrl}/${lang}/`,
+      canonical: `${baseUrl}/${lang}/html-format`,
       languages: {
         ru: `${baseUrl}/${lang}/html-format`,
         en: `${baseUrl}/${lang}/html-format`,
@@ -67,7 +66,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function TextProcessor({
+export default async function HtmlFormat({
   params,
 }: {
   params: Promise<{ lang: Lang }>;

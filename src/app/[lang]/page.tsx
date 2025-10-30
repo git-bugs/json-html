@@ -1,6 +1,4 @@
 import { Lang } from '../../types/lang';
-import Link from 'next/link';
-
 import './style.scss';
 import Image from 'next/image';
 
@@ -91,7 +89,6 @@ export default async function Page({
 }) {
   const { lang } = await params;
   const t = translations[lang] || translations.en;
-
   return (
     <main className="main-content">
       <header className="header">
@@ -100,13 +97,10 @@ export default async function Page({
             <span className="point point-circe"></span>
             <span className="point point-circe"></span>
             <span className="point point-circe"></span>
-            <img src="/logo.svg" alt="" className="header-logo" />
-            <Link
-              className="header-lang"
-              href={`/${lang == 'en' ? 'ru' : 'en'}`}
-            >
-              <img src="/language.svg" alt="langusage" />
-            </Link>
+            <img src="/images/logo.svg" alt="" className="header-logo" />
+            <a className="header-lang" href={`/${lang == 'en' ? 'ru' : 'en'}`}>
+              <img src="/images/language.svg" alt="langusage" />
+            </a>
           </div>
         </div>
       </header>
@@ -137,7 +131,7 @@ export default async function Page({
                   <h2 className="services-title">{el.h2}</h2>
 
                   <Image
-                    src={`/${el.img_url}`}
+                    src={`/images/${el.img_url}`}
                     alt={el.img_alt}
                     width={0}
                     height={0}
@@ -153,9 +147,9 @@ export default async function Page({
                     ))}
                   </ul>
                 </div>
-                <Link href={el.link} className="services-link">
+                <a href={el.link} className="services-link">
                   {el.link_text}
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -164,7 +158,7 @@ export default async function Page({
       <footer className="footer">
         <div className="container">
           <div className="footer-inner">
-            <img src="/mail.svg" alt="mail" />
+            <img src="/images/mail.svg" alt="mail" />
             <div className="footer-mail">tutejsy.bot@gmail.com</div>
           </div>
         </div>

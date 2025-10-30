@@ -110,7 +110,7 @@ export default function HtmlOutput() {
             onClick={acceptResultToOriginal}
             disabled={result.trim() == original.trim()}
           >
-            <img src="/arrow_left.svg" alt="arrow" />
+            <img src="/images/arrow_left.svg" alt="arrow" />
           </button>
 
           <div className="select-box">
@@ -122,6 +122,7 @@ export default function HtmlOutput() {
               value={option}
               onChange={(e) => setOption(e.target.value)}
               disabled={!result || isProcessing}
+              aria-label="select-option"
             >
               <option value="format">{t.BUTTON_FORMAT}</option>
               <option value="minify">{t.BUTTON_MINIFY}</option>

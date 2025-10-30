@@ -6,12 +6,6 @@ const VALID_LANGS = ['ru', 'en'];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const lang = pathname.split('/')[1];
-  console.log(lang);
-  console.log(VALID_LANGS.includes(lang));
-  if (!VALID_LANGS.includes(lang)) {
-    console.log(1);
-    // return NextResponse.redirect(new URL('/test', request.url));
-  }
 
   const response = NextResponse.next();
   if (['ru', 'en'].includes(lang)) {

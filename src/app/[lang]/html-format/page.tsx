@@ -47,10 +47,10 @@ export async function generateMetadata({
       siteName: 'JSON HTML format',
       images: [
         {
-          url: `${baseUrl}/html-${lang}-image.png`,
+          url: `${baseUrl}/images/og-${lang}-html.png`,
           width: 1200,
           height: 630,
-          alt: 'HTML',
+          alt: 'OG HTML',
         },
       ],
       locale: lang === 'ru' ? 'ru_RU' : 'en_US',

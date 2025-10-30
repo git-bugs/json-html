@@ -40,7 +40,7 @@ export async function generateMetadata({
       siteName: 'JSON HTML format',
       images: [
         {
-          url: `${baseUrl}/og-${lang}-image.jpg`,
+          url: `${baseUrl}/images/og-${lang}-image.jpg`,
           width: 1200,
           height: 630,
           alt: 'JSON HTML format',

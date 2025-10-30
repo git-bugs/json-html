@@ -1,6 +1,7 @@
 import { Lang } from '../../types/lang';
 import './style.scss';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 const translations = {
   ru: {
@@ -88,6 +89,9 @@ export default async function Page({
   params: Promise<{ lang: Lang }>;
 }) {
   const { lang } = await params;
+  if (!['ru', 'en'].includes(lang)) {
+    notFound();
+  }
   const t = translations[lang] || translations.en;
   return (
     <main className="main-content">
@@ -99,7 +103,7 @@ export default async function Page({
             <span className="point point-circe"></span>
             <img src="/images/logo.svg" alt="" className="header-logo" />
             <a className="header-lang" href={`/${lang == 'en' ? 'ru' : 'en'}`}>
-              <img src="/images/language.svg" alt="langusage" />
+              <img src="/images/language.svg" alt="lang" />
             </a>
           </div>
         </div>

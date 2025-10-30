@@ -53,7 +53,7 @@ export async function generateMetadata({
           url: `${baseUrl}/json-${lang}-image.png`,
           width: 1200,
           height: 630,
-          alt: 'JSON',
+          alt: 'OG JSON',
         },
       ],
       locale: lang === 'ru' ? 'ru_RU' : 'en_US',

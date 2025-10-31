@@ -32,6 +32,13 @@ export default async function RootLayout({
   const lang = cook.get('lang')?.value;
   return (
     <html lang={lang}>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="google-site-verification=irAAMTPdzClNSHekbRKMYSPc1XPJPJR95Gj8lyGhocU"
+        />
+        <meta name="yandex-verification" content="6f6efeb610093273" />
+      </head>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         {children}
         <Analytics />

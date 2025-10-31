@@ -1,6 +1,8 @@
 import { JetBrains_Mono, Inter, Open_Sans } from 'next/font/google';
 import './globals.css';
 import { cookies } from 'next/headers';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const open = Open_Sans({
   variable: '--font-open',
@@ -32,6 +34,8 @@ export default async function RootLayout({
     <html lang={lang}>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

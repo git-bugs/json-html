@@ -35,7 +35,7 @@ export default async function RootLayout({
       <head>
         <meta
           name="google-site-verification"
-          content="google-site-verification=irAAMTPdzClNSHekbRKMYSPc1XPJPJR95Gj8lyGhocU"
+          content="irAAMTPdzClNSHekbRKMYSPc1XPJPJR95Gj8lyGhocU"
         />
         <meta name="yandex-verification" content="6f6efeb610093273" />
       </head>

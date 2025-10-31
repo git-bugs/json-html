@@ -47,6 +47,7 @@ export const useJsonStore = create<State>((set, get) => ({
       set({ validJson: true });
     } catch (error) {
       set({ validJson: false });
+      console.error(error);
     }
   },
 
@@ -82,7 +83,9 @@ export const useJsonStore = create<State>((set, get) => ({
       } else {
         set({ jsonKeys: [] });
       }
-    } catch (e) {}
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   format: () => {
@@ -91,11 +94,12 @@ export const useJsonStore = create<State>((set, get) => ({
       const parsed = JSON.parse(get().original);
       const pretty = JSON.stringify(parsed, null, 2);
       set({ result: pretty, isProcessing: false });
-    } catch (e) {
+    } catch (error) {
       set({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
       });
+      console.error(error);
     }
   },
 
@@ -114,31 +118,32 @@ export const useJsonStore = create<State>((set, get) => ({
           isProcessing: false,
         });
       }
-    } catch {
+    } catch (error) {
       set({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
       });
+      console.error(error);
     }
   },
 
   removeKey: (key) => {
     set({ isProcessing: true });
     try {
-      const parsed = JSON.parse(get().original);
-      let removed;
+      const parsed = JSON.parse(get().original) as unknown;
+      let removed: unknown;
 
       if (Array.isArray(parsed)) {
-        removed = parsed.map((obj: any) => {
+        removed = parsed.map((obj: unknown) => {
           if (typeof obj === 'object' && obj !== null) {
-            const copy = { ...obj };
+            const copy = { ...obj } as Record<string, unknown>;
             delete copy[key];
             return copy;
           }
           return obj;
         });
       } else if (typeof parsed === 'object' && parsed !== null) {
-        const copy = { ...parsed };
+        const copy = { ...parsed } as Record<string, unknown>;
         delete copy[key];
         removed = copy;
       }
@@ -149,24 +154,27 @@ export const useJsonStore = create<State>((set, get) => ({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
       });
+      console.error(error);
     }
   },
 
   addKey: (newKey, newKeyValue, newKeyStringValue) => {
     try {
       set({ isProcessing: true });
-      const parsed = JSON.parse(get().original);
-      let value: any;
+      const parsed = JSON.parse(get().original) as unknown;
+      let value: unknown;
       if (newKeyValue === 'null') value = null;
       if (newKeyValue === 'true' || newKeyValue === 'false')
         value = newKeyValue.trim().toLowerCase() === 'true';
       if (newKeyValue === 'string') value = newKeyStringValue;
       let updated;
       if (Array.isArray(parsed)) {
-        updated = parsed.map((obj: any) => ({
-          ...obj,
-          [newKey]: value,
-        }));
+        updated = parsed.map((obj: unknown) => {
+          if (typeof obj === 'object' && obj !== null) {
+            return { ...obj, [newKey]: value };
+          }
+          return obj;
+        });
       } else if (typeof parsed === 'object' && parsed !== null) {
         updated = { ...parsed, [newKey]: value };
       }
@@ -177,6 +185,7 @@ export const useJsonStore = create<State>((set, get) => ({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
       });
+      console.error(error);
     }
   },
 
@@ -200,6 +209,7 @@ export const useJsonStore = create<State>((set, get) => ({
         result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
         isProcessing: false,
       });
+      console.error(error);
     }
   },
 }));

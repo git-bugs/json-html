@@ -31,8 +31,8 @@ const translation = {
 
 export default function JsonInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
   const [errorMessege, setErrorMessage] = useState('');
+  const [textSize, setTextSize] = useState('0 B');
   const { setLang, fileName, setFileName, original, setOriginal } =
     useJsonStore();
 
@@ -42,7 +42,7 @@ export default function JsonInput() {
 
   useEffect(() => {
     setLang(lang);
-  }, [lang]);
+  }, [setLang, lang]);
 
   const handleCloseStatus = () => {
     setErrorMessage('');
@@ -80,19 +80,16 @@ export default function JsonInput() {
   const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragOver(true);
   };
 
   const handleDragLeave = (e: React.DragEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragOver(false);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragOver(false);
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
@@ -132,16 +129,16 @@ export default function JsonInput() {
     }
   };
 
-  function calculateTextSize(text: string) {
+  useEffect(() => {
     const sizeInBytes = new TextEncoder().encode(original).length;
-    if (sizeInBytes === 0) return '0 B';
+    if (sizeInBytes === 0) setTextSize('0 B');
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(sizeInBytes) / Math.log(k));
-    return (
+    setTextSize(
       parseFloat((sizeInBytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
     );
-  }
+  }, [original]);
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -168,8 +165,8 @@ export default function JsonInput() {
           </label>
         </div>
         <div className="input-stats">
-          {original != '' && <span className="input-name">{fileName}</span>}
-          <span className="input-size">{calculateTextSize(original)}</span>
+          {original && <span className="input-name">{fileName}</span>}
+          {original && <span className="input-size">{textSize}</span>}
         </div>
       </div>
       <textarea

@@ -7,7 +7,7 @@ import './format-json.scss';
 import './json-media.scss';
 
 import Header from '@/components/header';
-import Script from 'next/script';
+
 
 const translations = {
   ru: {
@@ -77,7 +77,6 @@ export default async function JsonFormat({
   const { lang } = await params;
   const baseUrl = process.env.BASE_URL;
   const t = translations[lang] || translations.en;
-  const htmlLnag = lang === 'ru' ? 'ru-RU' : 'en-EN';
   return (
     <>
       <script

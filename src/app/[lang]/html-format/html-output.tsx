@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import './html-output.scss';
-import { useHtmlStore } from '@/store/html-store';
+import { HtmlState, useHtmlStore } from '@/store/html-store';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
+import Image from 'next/image';
 
 const translation = {
   ru: {
@@ -43,10 +44,14 @@ const translation = {
   },
 } as const;
 
+type NoArgKeys = {
+  [K in keyof HtmlState]: HtmlState[K] extends () => void ? K : never;
+}[keyof HtmlState];
+
 export default function HtmlOutput() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [option, setOption] = useState<string>('format');
+  const [option, setOption] = useState<NoArgKeys>('format');
   const { result, fileName, isProcessing, original, acceptResultToOriginal } =
     useHtmlStore();
 
@@ -65,6 +70,7 @@ export default function HtmlOutput() {
         setTimeout(() => setCopySuccess(false), 2000);
       }
     } catch (err) {
+      console.error(err);
       textareaRef.current?.select();
       document.execCommand('copy');
       setCopySuccess(true);
@@ -97,8 +103,10 @@ export default function HtmlOutput() {
   };
 
   useEffect(() => {
-    const store = useHtmlStore.getState();
-    (store as Record<string, any>)[option]();
+    const store: HtmlState = useHtmlStore.getState();
+    if (typeof store[option] === 'function') {
+      store[option]();
+    }
   }, [option, original]);
 
   return (
@@ -110,7 +118,12 @@ export default function HtmlOutput() {
             onClick={acceptResultToOriginal}
             disabled={result.trim() == original.trim()}
           >
-            <img src="/images/arrow_left.svg" alt="arrow" />
+            <Image
+              src="/images/arrow_left.svg"
+              alt="arrow"
+              width={25}
+              height={25}
+            />
           </button>
 
           <div className="select-box">
@@ -120,7 +133,7 @@ export default function HtmlOutput() {
               id="options-select"
               className="options-select output-button"
               value={option}
-              onChange={(e) => setOption(e.target.value)}
+              onChange={(e) => setOption(e.target.value as NoArgKeys)}
               disabled={!result || isProcessing}
               aria-label="select-option"
             >

@@ -101,9 +101,20 @@ export default async function Page({
             <span className="point point-circe"></span>
             <span className="point point-circe"></span>
             <span className="point point-circe"></span>
-            <img src="/images/logo.svg" alt="" className="header-logo" />
+            <Image
+              src="/images/logo.svg"
+              alt="logo"
+              className="header-logo"
+              width={56}
+              height={56}
+            />
             <a className="header-lang" href={`/${lang == 'en' ? 'ru' : 'en'}`}>
-              <img src="/images/language.svg" alt="lang" />
+              <Image
+                src="/images/language.svg"
+                alt="lang"
+                width={40}
+                height={40}
+              />
             </a>
           </div>
         </div>
@@ -162,7 +173,7 @@ export default async function Page({
       <footer className="footer">
         <div className="container">
           <div className="footer-inner">
-            <img src="/images/mail.svg" alt="mail" />
+            <Image src="/images/mail.svg" alt="mail" width={20} height={16} />
             <div className="footer-mail">tutejsy.bot@gmail.com</div>
           </div>
         </div>

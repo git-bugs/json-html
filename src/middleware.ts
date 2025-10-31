@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const VALID_LANGS = ['ru', 'en'];
-
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const lang = pathname.split('/')[1];
@@ -15,5 +13,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|static|images|favicon.ico).*)'],
+  matcher: [
+    '/((?!api|_next|static|images|favicon.ico|robots.txt|sitemap.xml).*)',
+  ],
 };

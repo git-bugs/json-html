@@ -70,10 +70,10 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: Lang }>;
+  params: Promise<{ lang: string }>;
 }>) {
   const { lang } = await params;
-  const t = translations[lang] || translations.en;
+  const t = translations[lang as 'ru' | 'en'] || translations.en;
   const baseUrl = process.env.BASE_URL;
 
   return (

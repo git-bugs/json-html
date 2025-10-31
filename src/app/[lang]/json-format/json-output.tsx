@@ -5,6 +5,7 @@ import './json-output.scss';
 import { useJsonStore } from '@/store/json-store';
 import { useParams } from 'next/navigation';
 import { Lang } from '../../../types/lang';
+import Image from 'next/image';
 
 const translation = {
   ru: {
@@ -70,7 +71,6 @@ export default function JsonOutput() {
   const [key, setKey] = useState('');
   const [newKey, setNewKey] = useState('');
   const [newKeyValue, setNewKeyValue] = useState('null');
-  const [len, setLen] = useState(0);
   const [newKeyStringValue, setNewKeyStringValue] = useState('');
 
   const {
@@ -91,14 +91,12 @@ export default function JsonOutput() {
     if (!result) return;
     try {
       if (textareaRef.current) {
-        // textareaRef.current.select();
         await navigator.clipboard.writeText(result);
         setCopySuccess(true);
-        // onCopy?.(result);
         setTimeout(() => setCopySuccess(false), 2000);
       }
     } catch (err) {
-      // Fallback для старых браузеров
+      console.error(err);
       textareaRef.current?.select();
       document.execCommand('copy');
       setCopySuccess(true);
@@ -132,35 +130,49 @@ export default function JsonOutput() {
   };
 
   useEffect(() => {
-    const store = useJsonStore.getState();
-    if (
-      (original && selectedOption === 'format') ||
-      selectedOption === 'minify'
-    ) {
-      (store as Record<string, any>)[selectedOption]();
-    }
-    if (original && selectedOption === 'removeKey') {
-      (store as Record<string, any>)[selectedOption](key);
-    }
-    if (original && selectedOption === 'addKey' && newKey) {
-      (store as Record<string, any>)[selectedOption](
-        newKey,
-        newKeyValue,
-        newKeyStringValue
-      );
-    }
-    if (original && selectedOption === 'renameKey' && newKey) {
-      (store as Record<string, any>)[selectedOption](key, newKey);
-    }
-  }, [selectedOption, key, len, newKey, newKeyValue, newKeyStringValue]);
-
-  useEffect(() => {
     if (jsonKeys.length > 0) {
       setKey(jsonKeys[0]);
     }
-    setLen(original.length);
-    if (!original) setRusultEmpty();
-  }, [original]);
+    if (!original) {
+      setRusultEmpty();
+      return; 
+    }
+
+    const store = useJsonStore.getState();
+
+    switch (selectedOption) {
+      case 'format':
+        store.format();
+        break;
+      case 'minify':
+        store.minify();
+        break;
+      case 'removeKey':
+        store.removeKey(key);
+        break;
+      case 'addKey':
+        if (newKey) {
+          store.addKey(newKey, newKeyValue, newKeyStringValue);
+        }
+        break;
+      case 'renameKey':
+        if (newKey) {
+          store.renameKey(key, newKey);
+        }
+        break;
+      default:
+        break;
+    }
+  }, [
+    selectedOption,
+    key,
+    newKey,
+    newKeyValue,
+    newKeyStringValue,
+    original,
+    jsonKeys,
+    setRusultEmpty,
+  ]);
 
   return (
     <div className="output-container">
@@ -171,7 +183,12 @@ export default function JsonOutput() {
           disabled={result.trim() === original.trim() || !result || !validJson}
           aria-label="to-original"
         >
-          <img src="/images/arrow_left.svg" alt="" />
+          <Image
+            src="/images/arrow_left.svg"
+            alt="arrow"
+            width={25}
+            height={25}
+          />
         </button>
 
         <div className="select-box">

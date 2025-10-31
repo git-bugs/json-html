@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type State = {
+export type HtmlState = {
   original: string;
   result: string;
   fileName: string;
@@ -17,7 +17,7 @@ type State = {
   minify: () => void;
 };
 
-export const useHtmlStore = create<State>((set, get) => ({
+export const useHtmlStore = create<HtmlState>((set, get) => ({
   original: '',
   result: '',
   fileName: '',

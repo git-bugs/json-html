@@ -1,7 +1,6 @@
 import { Lang } from '../../types/lang';
 import './style.scss';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
 
 const translations = {
   ru: {
@@ -89,9 +88,6 @@ export default async function Page({
   params: Promise<{ lang: Lang }>;
 }) {
   const { lang } = await params;
-  if (!['ru', 'en'].includes(lang)) {
-    notFound();
-  }
   const t = translations[lang] || translations.en;
   return (
     <main className="main-content">

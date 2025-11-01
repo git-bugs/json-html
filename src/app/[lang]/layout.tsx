@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Lang } from '../../types/lang';
+import { notFound } from 'next/navigation';
 
 const translations = {
   ru: {
@@ -73,6 +74,9 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>;
 }>) {
   const { lang } = await params;
+  if (!['ru', 'en'].includes(lang)) {
+    notFound();
+  }
   const t = translations[lang as 'ru' | 'en'] || translations.en;
   const baseUrl = process.env.BASE_URL;
 

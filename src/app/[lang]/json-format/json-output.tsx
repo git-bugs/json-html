@@ -141,6 +141,8 @@ export default function JsonOutput() {
   useEffect(() => {
     const store = useJsonStore.getState();
 
+    if (!original) return;
+
     switch (selectedOption) {
       case 'format':
         store.format();

@@ -135,9 +135,10 @@ export default function JsonOutput() {
     }
     if (!original) {
       setRusultEmpty();
-      return; 
     }
+  }, [original, jsonKeys, setRusultEmpty]);
 
+  useEffect(() => {
     const store = useJsonStore.getState();
 
     switch (selectedOption) {
@@ -163,16 +164,7 @@ export default function JsonOutput() {
       default:
         break;
     }
-  }, [
-    selectedOption,
-    key,
-    newKey,
-    newKeyValue,
-    newKeyStringValue,
-    original,
-    jsonKeys,
-    setRusultEmpty,
-  ]);
+  }, [selectedOption, key, newKey, newKeyValue, newKeyStringValue, original]);
 
   return (
     <div className="output-container">

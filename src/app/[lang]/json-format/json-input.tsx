@@ -49,11 +49,11 @@ export default function JsonInput() {
   };
 
   const handleClear = () => {
-    setOriginal('');
-    setFileName('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+      setOriginal('');
+      setFileName('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
   };
 
   const readFile = (file: File) => {

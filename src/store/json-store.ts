@@ -42,8 +42,8 @@ export const useJsonStore = create<State>((set, get) => ({
   setOriginal: (text) => {
     try {
       set({ original: text });
+      JSON.parse(text);
       get().extractKeys();
-      JSON.parse(get().original);
       set({ validJson: true });
     } catch (error) {
       set({ validJson: false });

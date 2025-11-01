@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  metadataBase: new URL('https://json-html.com'),
   htmlLimitedBots: /.*/,
   async redirects() {
     return [

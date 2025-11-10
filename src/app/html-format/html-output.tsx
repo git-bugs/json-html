@@ -3,8 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './html-output.scss';
 import { HtmlState, useHtmlStore } from '@/store/html-store';
-import { useParams } from 'next/navigation';
-import { Lang } from '../../../types/lang';
 import Image from 'next/image';
 
 const translation = {
@@ -55,9 +53,7 @@ export default function HtmlOutput() {
   const { result, fileName, isProcessing, original, acceptResultToOriginal } =
     useHtmlStore();
 
-  const params = useParams<{ lang: Lang }>();
-  const { lang } = params;
-  const t = translation[lang];
+  const t = translation.en;
 
   const handleCopy = async () => {
     if (!result) return;

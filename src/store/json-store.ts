@@ -1,4 +1,3 @@
-import { Lang } from '@/types/lang';
 import { create } from 'zustand';
 
 type State = {
@@ -6,9 +5,7 @@ type State = {
   result: string;
   fileName: string;
   isProcessing: boolean;
-  lang: Lang;
   jsonKeys: string[];
-  setLang: (lang: Lang) => void;
   setFileName: (name: string) => void;
   setOriginal: (text: string) => void;
   acceptResult: () => void;
@@ -35,7 +32,6 @@ export const useJsonStore = create<State>((set, get) => ({
   isProcessing: false,
   jsonKeys: [],
   validJson: true,
-  setLang: (lang: Lang) => set({ lang }),
 
   setFileName: (name) => set({ fileName: name }),
 
@@ -93,7 +89,7 @@ export const useJsonStore = create<State>((set, get) => ({
       set({ result: pretty, isProcessing: false });
     } catch {
       set({
-        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        result: 'Invalid JSON',
         isProcessing: false,
       });
     }
@@ -110,13 +106,13 @@ export const useJsonStore = create<State>((set, get) => ({
         set({ result: JSON.stringify(parsed), isProcessing: false });
       } else {
         set({
-          result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+          result: 'Invalid JSON',
           isProcessing: false,
         });
       }
     } catch {
       set({
-        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        result: 'Invalid JSON',
         isProcessing: false,
       });
     }
@@ -146,7 +142,7 @@ export const useJsonStore = create<State>((set, get) => ({
       set({ result: JSON.stringify(removed), isProcessing: false });
     } catch {
       set({
-        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        result: 'Invalid JSON',
         isProcessing: false,
       });
     }
@@ -176,7 +172,7 @@ export const useJsonStore = create<State>((set, get) => ({
       set({ result: JSON.stringify(updated), isProcessing: false });
     } catch {
       set({
-        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        result: 'Invalid JSON',
         isProcessing: false,
       });
     }
@@ -199,7 +195,7 @@ export const useJsonStore = create<State>((set, get) => ({
       set({ result: JSON.stringify(updated), isProcessing: false });
     } catch {
       set({
-        result: get().lang === 'en' ? 'Invalid JSON' : 'Невалидный JSON',
+        result: 'Invalid JSON',
         isProcessing: false,
       });
     }

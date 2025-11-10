@@ -1,10 +1,7 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import './json-output.scss';
 import { useJsonStore } from '@/store/json-store';
-import { useParams } from 'next/navigation';
-import { Lang } from '../../../types/lang';
 import Image from 'next/image';
 
 const translation = {
@@ -83,9 +80,8 @@ export default function JsonOutput() {
     setRusultEmpty,
     acceptResult,
   } = useJsonStore();
-  const params = useParams<{ lang: Lang }>();
-  const { lang } = params;
-  const t = translation[lang];
+
+  const t = translation.en;
 
   const handleCopy = async () => {
     if (!result) return;

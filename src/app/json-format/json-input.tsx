@@ -1,11 +1,7 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
-
 import './json-input.scss';
 import ErrorWidget from '@/components/errorWidget';
-import { useParams } from 'next/navigation';
-import { Lang } from '../../../types/lang';
 import { useJsonStore } from '@/store/json-store';
 
 const translation = {
@@ -33,16 +29,10 @@ export default function JsonInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [errorMessege, setErrorMessage] = useState('');
   const [textSize, setTextSize] = useState('0 B');
-  const { setLang, fileName, setFileName, original, setOriginal } =
+  const { fileName, setFileName, original, setOriginal } =
     useJsonStore();
 
-  const params = useParams<{ lang: Lang }>();
-  const { lang } = params;
-  const t = translation[lang];
-
-  useEffect(() => {
-    setLang(lang);
-  }, [setLang, lang]);
+  const t = translation.en;
 
   const handleCloseStatus = () => {
     setErrorMessage('');

@@ -1,11 +1,7 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
-
 import './html-input.scss';
 import ErrorWidget from '@/components/errorWidget';
-import { useParams } from 'next/navigation';
-import { Lang } from '../../../types/lang';
 import { useHtmlStore } from '@/store/html-store';
 
 const translation = {
@@ -35,9 +31,7 @@ export default function HtmlInput() {
   const { fileName, setFileName, original, setOriginal } = useHtmlStore();
   const [textSize, setTextSize] = useState('0 B');
 
-  const params = useParams<{ lang: Lang }>();
-  const { lang } = params;
-  const t = translation[lang];
+  const t = translation.en;
 
   const handleCloseStatus = () => {
     setErrorMessage('');

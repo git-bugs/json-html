@@ -1,4 +1,3 @@
-import { Lang } from '../../../types/lang';
 import HtmlInput from './html-input';
 import { Metadata } from 'next';
 import HtmlOutput from './html-output';
@@ -29,13 +28,8 @@ const translations = {
   },
 } as const;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ lang: Lang }>;
-}): Promise<Metadata> {
-  const { lang } = await params;
-  const t = translations[lang] || translations.en;
+export async function generateMetadata(): Promise<Metadata> {
+  const t = translations.en;
   const baseUrl = process.env.BASE_URL;
   return {
     title: t.meta_title,
@@ -43,37 +37,28 @@ export async function generateMetadata({
     openGraph: {
       title: t.meta_title,
       description: t.meta_description,
-      url: `${baseUrl}/${lang}/html-format`,
+      url: `${baseUrl}/html-format`,
       siteName: 'JSON HTML format',
       images: [
         {
-          url: `${baseUrl}/images/og-${lang}-html.png`,
+          url: `${baseUrl}/images/og-en-html.png`,
           width: 1200,
           height: 630,
           alt: 'OG HTML',
         },
       ],
-      locale: lang === 'ru' ? 'ru_RU' : 'en_US',
+      locale: 'en_US',
       type: 'website',
     },
     alternates: {
-      canonical: `${baseUrl}/${lang}/html-format`,
-      languages: {
-        ru: `${baseUrl}/${lang}/html-format`,
-        en: `${baseUrl}/${lang}/html-format`,
-      },
+      canonical: `${baseUrl}/html-format`,
     },
   };
 }
 
-export default async function HtmlFormat({
-  params,
-}: {
-  params: Promise<{ lang: Lang }>;
-}) {
-  const { lang } = await params;
+export default async function HtmlFormat() {
   const baseUrl = process.env.BASE_URL;
-  const t = translations[lang] || translations.en;
+  const t = translations.en;
   return (
     <>
       <script
@@ -85,9 +70,9 @@ export default async function HtmlFormat({
             name: t.schema_name,
             applicationCategory: 'WebApplication',
             operatingSystem: 'All',
-            url: `${baseUrl}/${lang}/html-format`,
+            url: `${baseUrl}/html-format`,
             description: t.schema_description,
-            inLanguage: lang,
+            inLanguage: 'en',
             offers: {
               '@type': 'Offer',
               price: '0',
@@ -98,7 +83,7 @@ export default async function HtmlFormat({
       />
 
       <section className="html-format-container">
-        <Header lang={lang} title={translations[lang].header_title} />
+        <Header title={translations.en.header_title} />
         <main className="html-format">
           <HtmlInput />
           <HtmlOutput />

@@ -28,7 +28,7 @@ const cards = {
         'Переименование ключей',
         'Перемещение ключа',
       ],
-      link: '/ru/json-format',
+      link: '/json-format',
       link_text: 'перейти в JSON редактор',
     },
     {
@@ -43,7 +43,7 @@ const cards = {
         'Экранирование',
         'Минификация',
       ],
-      link: '/ru/html-format',
+      link: '/html-format',
       link_text: 'перейти в HTML редактор',
     },
   ],
@@ -82,7 +82,7 @@ const cards = {
 } as const;
 
 export default function Page() {
-  const t = translations.en;
+  const t = translations.ru;
   return (
     <main className="main-content">
       <header className="header">
@@ -122,7 +122,7 @@ export default function Page() {
           <span className="point point-circe"></span>
           <span className="point point-circe"></span>
           <div className="services-inner">
-            {cards['en'].map((el, i) => (
+            {cards['ru'].map((el, i) => (
               <div className="services-item" key={i}>
                 <div className="services-box">
                   <h2 className="services-title">{el.h2}</h2>

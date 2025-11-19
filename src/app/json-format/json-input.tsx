@@ -32,7 +32,7 @@ export default function JsonInput() {
   const { fileName, setFileName, original, setOriginal } =
     useJsonStore();
 
-  const t = translation.en;
+  const t = translation.ru;
 
   const handleCloseStatus = () => {
     setErrorMessage('');

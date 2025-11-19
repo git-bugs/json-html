@@ -8,7 +8,7 @@ import Header from '@/components/header';
 const translations = {
   ru: {
     meta_title:
-      'HTML: форматирование, экранирование, минификация, нормализация и редактирование текста',
+      'HTML онлайн инструменты и методы для обработки и форматирования',
     meta_description:
       'Инструменты и методы анализа HTML: форматирование, экранирование, нормализация, редактирование и минификация',
     header_title: 'HTML форматирование',
@@ -29,7 +29,7 @@ const translations = {
 } as const;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = translations.en;
+  const t = translations.ru;
   const baseUrl = process.env.BASE_URL;
   return {
     title: t.meta_title,
@@ -38,16 +38,16 @@ export async function generateMetadata(): Promise<Metadata> {
       title: t.meta_title,
       description: t.meta_description,
       url: `${baseUrl}/html-format`,
-      siteName: 'JSON HTML format',
+      siteName: 'JSON HTML',
       images: [
         {
-          url: `${baseUrl}/images/og-en-html.png`,
+          url: `${baseUrl}/images/og-ru-html.png`,
           width: 1200,
           height: 630,
-          alt: 'OG HTML',
+          alt: 'HTML preview',
         },
       ],
-      locale: 'en_US',
+      locale: 'ru_RU',
       type: 'website',
     },
     alternates: {
@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HtmlFormat() {
   const baseUrl = process.env.BASE_URL;
-  const t = translations.en;
+  const t = translations.ru;
   return (
     <>
       <script
@@ -67,17 +67,13 @@ export default async function HtmlFormat() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
+            image: `${baseUrl}/images/og-ru-html.png`,
             name: t.schema_name,
             applicationCategory: 'WebApplication',
             operatingSystem: 'All',
             url: `${baseUrl}/html-format`,
             description: t.schema_description,
-            inLanguage: 'en',
-            offers: {
-              '@type': 'Offer',
-              price: '0',
-              priceCurrency: 'USD',
-            },
+            inLanguage: 'ru',
           }),
         }}
       />

@@ -25,13 +25,12 @@ const inter = Inter({
 
 const translations = {
   ru: {
-    meta_title:
-      'JSON и HTML онлайн — форматирование, валидация и преобразование кода',
+    meta_title: 'JSON и HTML онлайн форматирование, валидация и преобразование',
     meta_description:
-      'Бесплатные онлайн-инструменты для форматирования, проверки и преобразования JSON и HTML. Редактируйте и очищайте код прямо в браузере.',
-    schema_name: 'JSON HTML формат',
+      'Бесплатные онлайн-инструменты для форматирования и преобразования JSON и HTML. Редактируйте и очищайте код прямо в браузере.',
+    schema_name: 'JSON HTML форматирование',
     schema_description:
-      'Комплексный набор веб-инструментов для работы с кодом: форматирование HTML и JSON с настраиваемыми параметрами, преобразование между различными форматами данных. Сервис работает полностью в браузере без загрузки файлов на сервер, обеспечивая безопасность и конфиденциальность данных пользователей.',
+      'Набор веб-инструментов для работы с кодом: форматирование HTML и JSON с настраиваемыми параметрами, преобразование между различными форматами данных. Сервис работает полностью в браузере без загрузки файлов на сервер, обеспечивая безопасность и конфиденциальность данных пользователей.',
   },
   en: {
     meta_title:
@@ -45,7 +44,7 @@ const translations = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = translations.en;
+  const t = translations.ru;
   const baseUrl = process.env.BASE_URL;
   return {
     title: t.meta_title,
@@ -54,16 +53,16 @@ export async function generateMetadata(): Promise<Metadata> {
       title: t.meta_title,
       description: t.meta_description,
       url: `${baseUrl}`,
-      siteName: 'JSON HTML format',
+      siteName: 'JSON HTML',
       images: [
         {
-          url: `${baseUrl}/images/og-en-image.jpg`,
+          url: `${baseUrl}/images/og-ru-image.jpg`,
           width: 1200,
           height: 630,
-          alt: 'JSON HTML format',
+          alt: 'JSON HTML',
         },
       ],
-      locale: 'en_US',
+      locale: 'ru_RU',
       type: 'website',
     },
     alternates: {
@@ -83,56 +82,25 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const t = translations.en;
   const baseUrl = process.env.BASE_URL;
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
+        <link rel="image_src" href={`${baseUrl}/images/og-ru-image.jpg`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:image"
+          content={`${baseUrl}/images/og-ru-image.jpg`}
+        />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <meta name="robots" content="index, follow" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
-              '@graph': [
-                {
-                  '@type': 'Organization',
-                  name: 'JSON HTML format',
-                  url: `${baseUrl}`,
-                  logo: `${baseUrl}/images/logo.svg`,
-                  sameAs: [],
-                },
-                {
-                  '@type': 'WebSite',
-                  name: t.schema_name,
-                  url: `${baseUrl}`,
-                  inLanguage: 'en',
-                },
-                {
-                  '@type': 'WebPage',
-                  name: 'Home',
-                  url: `${baseUrl}`,
-                  description: t.schema_description,
-                  inLanguage: 'en',
-                  mainEntity: {
-                    '@type': 'ItemList',
-                    name: 'Available Services',
-                    itemListElement: [
-                      {
-                        '@type': 'ListItem',
-                        position: 1,
-                        url: `${baseUrl}/html-format`,
-                        name: 'HTML formatting',
-                      },
-                      {
-                        '@type': 'ListItem',
-                        position: 2,
-                        url: `${baseUrl}/json-format`,
-                        name: 'JSON formatting',
-                      },
-                    ],
-                  },
-                },
-              ],
+              '@type': 'WebPage',
+              image: `${baseUrl}/images/og-ru-image.jpg`,
             }),
           }}
         />

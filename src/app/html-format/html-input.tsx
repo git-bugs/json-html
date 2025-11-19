@@ -31,7 +31,7 @@ export default function HtmlInput() {
   const { fileName, setFileName, original, setOriginal } = useHtmlStore();
   const [textSize, setTextSize] = useState('0 B');
 
-  const t = translation.en;
+  const t = translation.ru;
 
   const handleCloseStatus = () => {
     setErrorMessage('');

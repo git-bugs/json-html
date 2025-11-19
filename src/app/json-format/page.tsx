@@ -10,7 +10,7 @@ import Header from '@/components/header';
 const translations = {
   ru: {
     meta_title:
-      'JSON: форматирование, минификация, удаление ключей, добавление и переименование ключей',
+      'JSON онлайн инструменты и методы для обработки и форматирования',
     meta_description:
       'Онлайн инструменты и методы обработки JSON: форматирование, минификация, редактирование ключей.',
     header_title: 'JSON форматирование',
@@ -31,7 +31,7 @@ const translations = {
 } as const;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = translations.en;
+  const t = translations.ru;
   const baseUrl = process.env.BASE_URL;
   return {
     title: t.meta_title,
@@ -40,16 +40,16 @@ export async function generateMetadata(): Promise<Metadata> {
       title: t.meta_title,
       description: t.meta_description,
       url: `${baseUrl}/json-format`,
-      siteName: 'JSON HTML format',
+      siteName: 'JSON HTML',
       images: [
         {
-          url: `${baseUrl}/json-en-image.png`,
+          url: `${baseUrl}/json-ru-image.png`,
           width: 1200,
           height: 630,
-          alt: 'OG JSON',
+          alt: 'JSON preview',
         },
       ],
-      locale: 'en_US',
+      locale: 'ru_RU',
       type: 'website',
     },
     alternates: {
@@ -60,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function JsonFormat() {
   const baseUrl = process.env.BASE_URL;
-  const t = translations.en;
+  const t = translations.ru;
   return (
     <>
       <script
@@ -69,22 +69,18 @@ export default async function JsonFormat() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
+            image: `${baseUrl}/images/og-ru-json.png`,
             name: t.schema_name,
             applicationCategory: 'WebApplication',
             operatingSystem: 'All',
             url: `${baseUrl}/json-format`,
             description: t.schema_description,
-            inLanguage: 'en',
-            offers: {
-              '@type': 'Offer',
-              price: '0',
-              priceCurrency: 'USD',
-            },
+            inLanguage: 'ru',
           }),
         }}
       />
       <section className="json-format-container">
-        <Header title={translations.en.header_title}/>
+        <Header title={translations.ru.header_title} />
         <main className="json-format">
           <JsonInput />
           <JsonOutput />

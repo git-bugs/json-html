@@ -53,7 +53,7 @@ export default function HtmlOutput() {
   const { result, fileName, isProcessing, original, acceptResultToOriginal } =
     useHtmlStore();
 
-  const t = translation.en;
+  const t = translation.ru;
 
   const handleCopy = async () => {
     if (!result) return;

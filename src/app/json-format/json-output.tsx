@@ -81,7 +81,7 @@ export default function JsonOutput() {
     acceptResult,
   } = useJsonStore();
 
-  const t = translation.en;
+  const t = translation.ru;
 
   const handleCopy = async () => {
     if (!result) return;

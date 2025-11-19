@@ -100,7 +100,21 @@ export default async function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'WebPage',
-              image: `${baseUrl}/images/og-ru-image.jpg`,
+              headline: 'JSON HTML',
+              image: {
+                '@type': 'ImageObject',
+                url: `${baseUrl}/images/og-ru-image.jpg`,
+                width: 1200,
+                height: 630,
+              },
+              publisher: {
+                '@type': 'Organization',
+                name: 'JSON HTML',
+                logo: {
+                  '@type': 'ImageObject',
+                  url: `${baseUrl}/images/logo.svg`,
+                },
+              },
             }),
           }}
         />

@@ -67,13 +67,19 @@ export default async function HtmlFormat() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
-            image: `${baseUrl}/images/og-ru-html.png`,
             name: t.schema_name,
             applicationCategory: 'WebApplication',
             operatingSystem: 'All',
             url: `${baseUrl}/html-format`,
             description: t.schema_description,
             inLanguage: 'ru',
+            headline: 'JSON HTML',
+            image: {
+              '@type': 'ImageObject',
+              url: `${baseUrl}/images/og-ru-html.png`,
+              width: 1200,
+              height: 630,
+            },
           }),
         }}
       />

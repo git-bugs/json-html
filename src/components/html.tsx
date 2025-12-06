@@ -1,10 +1,10 @@
 import { useFileStore } from '@/store/file-store';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export default function Html() {
-  const store = useFileStore.getState();
   const { data, option, type, result, isProcessing, setOption } =
     useFileStore();
+  const store = useMemo(() => useFileStore.getState(), []);
 
   useEffect(() => {
     if (!data) return;

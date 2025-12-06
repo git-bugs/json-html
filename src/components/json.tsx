@@ -1,16 +1,16 @@
 'use client';
 
 import { useFileStore } from '@/store/file-store';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function Json() {
   const { data, option, result, jsonKeys, setOption } = useFileStore();
-  const store = useFileStore.getState();
   const [key, setKey] = useState('');
   const [newKey, setNewKey] = useState('');
-  const [newKeyValue, setNewKeyValue] = useState('');
+  const [newKeyValue, setNewKeyValue] = useState('null');
   const [newKeyStringValue, setNewKeyStringValue] = useState('');
-
+  
+  const store = useMemo(() => useFileStore.getState(), []);
   useEffect(() => {
     if (jsonKeys.length > 0) {
       setKey(jsonKeys[0]);

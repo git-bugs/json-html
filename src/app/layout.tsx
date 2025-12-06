@@ -1,8 +1,8 @@
 import { JetBrains_Mono, Inter, Open_Sans } from 'next/font/google';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
+import Header from '@/components/header';
 
 const open = Open_Sans({
   variable: '--font-open',
@@ -12,7 +12,7 @@ const open = Open_Sans({
 });
 
 const mono = JetBrains_Mono({
-  variable: '--font-jet-mono',
+  variable: '--font-jet',
   weight: ['400', '700'],
   display: 'swap',
 });
@@ -23,56 +23,31 @@ const inter = Inter({
   display: 'swap',
 });
 
-const translations = {
-  ru: {
-    meta_title: 'JSON и HTML онлайн форматирование, валидация и преобразование',
-    meta_description:
-      'Бесплатные онлайн-инструменты для форматирования и преобразования JSON и HTML. Редактируйте и очищайте код прямо в браузере.',
-    schema_name: 'JSON HTML форматирование',
-    schema_description:
-      'Набор веб-инструментов для работы с кодом: форматирование HTML и JSON с настраиваемыми параметрами, преобразование между различными форматами данных. Сервис работает полностью в браузере без загрузки файлов на сервер, обеспечивая безопасность и конфиденциальность данных пользователей.',
-  },
-  en: {
-    meta_title:
-      'JSON and HTML Online — Formatting, Validation, and Code Conversion',
-    meta_description:
-      'Free online tools to format, validate, and convert JSON and HTML code. Edit, clean, and beautify your code instantly in the browser.',
-    schema_name: 'JSON HTML format',
-    schema_description:
-      'Comprehensive set of web tools for working with code: HTML and JSON formatting with customizable parameters, conversion between different data formats. The service works entirely in the browser without uploading files to the server, ensuring the security and confidentiality of user data.',
-  },
-};
-
 export async function generateMetadata(): Promise<Metadata> {
-  const t = translations.ru;
   const baseUrl = process.env.BASE_URL;
   return {
-    title: t.meta_title,
-    description: t.meta_description,
+    title: 'Online JSON and HTML Processing Service',
+    description:
+      'Full set of tools for working with JSON and HTML: minification, formatting, key editing, HTML cleanup, escaping and optimization. Convenient solution for developers to speed up websites and applications.',
     openGraph: {
-      title: t.meta_title,
-      description: t.meta_description,
-      url: `${baseUrl}`,
-      siteName: 'JSON HTML',
+      title: 'Online JSON and HTML Processing Service',
+      description:
+        'Optimize JSON and HTML with minification, formatting, key editing, tag removal, escaping and more. Perfect for developers who want faster websites and applications.',
+      url: baseUrl,
+      siteName: 'Transform HTML & JSON',
       images: [
         {
-          url: `${baseUrl}/images/og-ru-image.jpg`,
+          url: `${baseUrl}/images/og-en-image.jpg`,
           width: 1200,
           height: 630,
-          alt: 'JSON HTML',
+          alt: 'Transform HTML & JSON',
         },
       ],
-      locale: 'ru_RU',
+      locale: 'en_EN',
       type: 'website',
     },
     alternates: {
       canonical: `${baseUrl}`,
-    },
-    icons: {
-      icon: {
-        url: '/favicon.ico',
-        type: 'image/x-icon',
-      },
     },
   };
 }
@@ -84,15 +59,11 @@ export default async function RootLayout({
 }>) {
   const baseUrl = process.env.BASE_URL;
   return (
-    <html lang="ru">
+    <html lang="en">
       <head>
-        <link rel="image_src" href={`${baseUrl}/images/og-ru-image.jpg`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:image"
-          content={`${baseUrl}/images/og-ru-image.jpg`}
-        />
+        <link rel="image_src" href={`${baseUrl}/images/og-en-image.jpg`} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <meta name="application-name" content="Transform HTML & JSON"></meta>
         <meta name="robots" content="index, follow" />
         <script
           type="application/ld+json"
@@ -100,16 +71,17 @@ export default async function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'WebPage',
-              headline: 'JSON HTML',
+              name: 'Transform HTML & JSON',
+              url: baseUrl,
               image: {
                 '@type': 'ImageObject',
-                url: `${baseUrl}/images/og-ru-image.jpg`,
+                url: `${baseUrl}/images/og-en-image.jpg`,
                 width: 1200,
                 height: 630,
               },
               publisher: {
                 '@type': 'Organization',
-                name: 'JSON HTML',
+                name: 'Transform HTML & JSON',
                 logo: {
                   '@type': 'ImageObject',
                   url: `${baseUrl}/images/logo.svg`,
@@ -120,9 +92,9 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
+        <Header />
         {children}
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

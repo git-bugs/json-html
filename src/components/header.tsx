@@ -1,20 +1,21 @@
 import Image from 'next/image';
+
 import './header.scss';
 import Link from 'next/link';
 
-export default function Header({ title }: { title: string }) {
+export default function Header() {
   return (
-    <header className="service-header">
-      <Link href="/">
+    <header className="header">
+      <Link href="/" style={{ lineHeight: '0' }}>
         <Image
-          src="/images/service-logo.svg"
-          alt="service logo"
-          width={25}
-          height={25}
+          src="/images/logo.svg"
+          width={32}
+          height={30}
+          alt="logo"
+          className="logo"
         />
       </Link>
-
-      <h1 className="service-title">{title}</h1>
+      <h1>Transform HTML & JSON</h1>
     </header>
   );
 }

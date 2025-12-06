@@ -1,0 +1,169 @@
+.output {
+  display: flex;
+  flex-direction: column;
+  button {
+    padding: 8px;
+    background: var(--blue);
+    cursor: pointer;
+    border: none;
+  }
+  select {
+    border: none;
+    font-family: inherit;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  button,
+  input,
+  select {
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px;
+    font-family: var(--font-inter);
+    background: var(--blue);
+    color: var(--bg);
+    &:hover {
+      background: var(--blue-hover);
+    }
+  }
+  input {
+    border: 1px solid var(--grey-lines);
+    background: var(--bg);
+    color: var(--text);
+    width: 130px;
+    &::placeholder {
+      font-style: italic;
+      color: var(--text);
+    }
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.select-box {
+  display: flex;
+  flex-direction: column;
+  span {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-family: var(--font-inter);
+  }
+}
+
+.output .output-accept {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -45;
+  left: 10;
+  background: #ff5722;
+  color: #fff;
+  transition: 0.2s;
+  animation: bounce 1s infinite linear;
+  &:hover {
+    background: #e64a19;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.output-content {
+  padding: 0 10px 20px;
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.output-box {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px;
+}
+
+.output-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 8px;
+  padding: 8px;
+}
+
+.output-buttons .copy-btn.success {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+  &:hover {
+    background: #10b981;
+  }
+}
+
+.output-textarea {
+  outline: none;
+  width: 100%;
+  resize: none;
+  flex: 1;
+  border: none;
+}
+
+.output-stats {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.processing-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 200px;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1230px) {
+  .output {
+    flex: 0;
+  }
+  #output {
+    height: 400px;
+  }
+}
+
+@media (max-width: 560px) {
+  .output-stats {
+    span:nth-child(1) {
+      display: none;
+    }
+  }
+}

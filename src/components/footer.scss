@@ -1,0 +1,7 @@
+.footer {
+  padding: clamp(16px, 2vw, 32px) clamp(10px, 2vw, 20px);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}

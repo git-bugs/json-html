@@ -61,35 +61,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="image_src" href={`${baseUrl}/images/og-en-image.jpg`} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <meta name="application-name" content="Transform HTML & JSON"></meta>
         <meta name="robots" content="index, follow" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebPage',
-              name: 'Transform HTML & JSON',
-              url: baseUrl,
-              image: {
-                '@type': 'ImageObject',
-                url: `${baseUrl}/images/og-en-image.jpg`,
-                width: 1200,
-                height: 630,
-              },
-              publisher: {
-                '@type': 'Organization',
-                name: 'Transform HTML & JSON',
-                logo: {
-                  '@type': 'ImageObject',
-                  url: `${baseUrl}/images/logo.svg`,
-                },
-              },
-            }),
-          }}
-        />
       </head>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         <Header />

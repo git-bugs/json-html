@@ -28,11 +28,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Online JSON and HTML Processing Service',
     description:
-      'Full set of tools for working with JSON and HTML: minification, formatting, key editing, HTML cleanup, escaping and optimization. Convenient solution for developers to speed up websites and applications.',
+      'Full set of tools for working with JSON and HTML: minification, formatting, key editing, HTML cleanup, escaping and optimization.',
     openGraph: {
       title: 'Online JSON and HTML Processing Service',
       description:
-        'Optimize JSON and HTML with minification, formatting, key editing, tag removal, escaping and more. Perfect for developers who want faster websites and applications.',
+        'Optimize JSON and HTML with minification, formatting, key editing, tag removal, escaping and more.',
       url: baseUrl,
       siteName: 'Transform HTML & JSON',
       images: [
@@ -57,12 +57,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const baseUrl = process.env.BASE_URL;
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <meta name="robots" content="index, follow" />
       </head>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         <Header />

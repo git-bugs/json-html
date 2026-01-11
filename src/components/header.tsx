@@ -9,13 +9,12 @@ export default function Header() {
       <Link href="/" style={{ lineHeight: '0' }}>
         <Image
           src="/images/logo.svg"
-          width={32}
-          height={30}
+          width={25}
+          height={25}
           alt="logo"
           className="logo"
         />
       </Link>
-      <h1>Transform HTML & JSON</h1>
     </header>
   );
 }

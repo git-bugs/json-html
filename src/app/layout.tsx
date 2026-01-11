@@ -26,13 +26,13 @@ const inter = Inter({
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.BASE_URL;
   return {
-    title: 'Online JSON and HTML Processing Service',
+    title: 'Online Code Editors: HTML & JSON Editors with Live Preview',
     description:
-      'Full set of tools for working with JSON and HTML: minification, formatting, key editing, HTML cleanup, escaping and optimization.',
+      'Free online code editors for HTML and JSON. Real-time preview, validation, formatting, and debugging tools for web development and data processing.',
     openGraph: {
-      title: 'Online JSON and HTML Processing Service',
+      title: 'Online Code Editors: HTML & JSON Editors with Live Preview',
       description:
-        'Optimize JSON and HTML with minification, formatting, key editing, tag removal, escaping and more.',
+        'Free online code editors for HTML and JSON. Real-time preview, validation, formatting, and debugging tools for web development and data processing.',
       url: baseUrl,
       siteName: 'Transform HTML & JSON',
       images: [
@@ -60,7 +60,25 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
       </head>
       <body className={`${mono.variable} ${inter.variable} ${open.variable}`}>
         <Header />
